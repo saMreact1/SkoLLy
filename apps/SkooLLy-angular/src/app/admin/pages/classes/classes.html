@@ -1,0 +1,54 @@
+<mat-card class="classes-container">
+  <!-- Header -->
+  <div class="header">
+    <h2>📚 Class Management</h2>
+    <button mat-flat-button color="primary" (click)="openAddClassModal()">
+      + Add Class
+    </button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="classes" class="mat-elevation-z2">
+
+      <!-- Class Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Class Name </th>
+        <td mat-cell *matCellDef="let c" data-label="Class Name"> {{ c.name }} </td>
+      </ng-container>
+
+      <!-- Teacher -->
+      <ng-container matColumnDef="teacher">
+        <th mat-header-cell *matHeaderCellDef> Teacher </th>
+        <td mat-cell *matCellDef="let c" data-label="Teacher">
+          <span class="badge teacher">{{ teachersMap[c.assignedTeacher] || 'Unassigned' }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Students -->
+      <ng-container matColumnDef="students" data-label="Students">
+        <th mat-header-cell *matHeaderCellDef> Students </th>
+        <td mat-cell *matCellDef="let c">
+          <span class="badge students">{{ c.students?.length || 0 }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let c" data-label="Actions">
+          <button mat-icon-button color="accent" (click)="openAssignTeacherDialog(c)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="confirmDeleteClass(c._id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </div>
+</mat-card>

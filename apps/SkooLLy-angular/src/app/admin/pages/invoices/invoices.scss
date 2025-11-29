@@ -1,0 +1,104 @@
+mat-card {
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+  overflow-x: auto;
+
+  .invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 0;
+      color: #1e1e2f;
+    }
+
+    button {
+      font-weight: 600;
+      border-radius: 0.75rem;
+      text-transform: none;
+    }
+  }
+
+  // WRAP THE TABLE IN A SCROLLABLE CONTAINER
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+
+    table {
+      min-width: 850px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+  }
+
+  .mat-header-cell, .mat-cell {
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    vertical-align: middle;
+    white-space: nowrap; // 🚫 prevents cell text from wrapping
+  }
+
+  .mat-header-cell {
+    font-weight: 700;
+    color: #555;
+    background: #f8f9fa;
+  }
+
+  .mat-row:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  .muted {
+    font-size: 0.8rem;
+    color: #777;
+  }
+
+  mat-chip {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 8px;
+  }
+
+  mat-menu {
+    button {
+      font-size: 0.9rem;
+    }
+  }
+
+    .snackbar-success {
+    background-color: #4caf50;
+    color: #fff;
+  }
+
+  .snackbar-warn {
+    background-color: #f44336;
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .invoice-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .mat-header-cell, .mat-cell {
+      font-size: 0.85rem;
+      padding: 0.75rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+}

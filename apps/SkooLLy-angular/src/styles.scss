@@ -1,0 +1,68 @@
+@use '@angular/material' as mat;
+@use './styles/theme.scss' as *;
+
+
+html {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  @include mat.theme((
+    color: (
+  //     // primary: mat.$azure-palette,
+  //     // tertiary: mat.$blue-palette,
+    ),
+    typography: 'Poppins',
+    density: 0,
+  ));
+
+  color-scheme: light;
+
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+}
+
+body {
+  // background-color: var(--primary-bg);
+  color: var(--primary-text);
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary-text);
+}
+
+.white-bg-snack {
+  background-color: #333 !important;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 12px;
+}
+
+::ng-deep .mat-dialog-container {
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+::ng-deep .resource-modal .mat-dialog-container {
+    border-radius: 1rem;
+    padding: 1.5rem 2rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    background: #ffffff;
+}
+
+@media (max-width: 600px) {
+    ::ng-deep .resource-modal .mat-dialog-container {
+        padding: 1rem;
+        width: 95vw !important;
+        max-width: 95vw !important;
+    }
+}

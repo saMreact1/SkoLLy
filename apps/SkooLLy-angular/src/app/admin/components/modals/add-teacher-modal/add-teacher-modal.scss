@@ -1,0 +1,22 @@
+h2 {
+  padding-left: 1rem;
+  margin: 1rem;
+  border-bottom: 1px solid rgb(58, 57, 57);
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1rem 2rem;
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}

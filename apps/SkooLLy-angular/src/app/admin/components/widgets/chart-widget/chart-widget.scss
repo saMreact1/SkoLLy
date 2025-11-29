@@ -1,0 +1,17 @@
+.chart-widget {
+  width: 100%;
+  max-width: 100%;
+  canvas {
+    max-height: 300px;
+  }
+
+  mat-card-title {
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 480px) {
+  mat-card-title {
+    font-size: 15px;
+  }
+}

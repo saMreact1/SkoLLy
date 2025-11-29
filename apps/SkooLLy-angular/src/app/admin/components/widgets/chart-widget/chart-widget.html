@@ -1,0 +1,21 @@
+<mat-card class="chart-widget">
+  <mat-card-header>
+    <mat-card-title>{{ title }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <canvas
+      baseChart
+      [data]="{
+        labels: chartLabels,
+        datasets: [{
+          data: chartData,
+          backgroundColor: defaultColors
+        }]
+      }"
+      [type]="chartType"
+      [options]="chartOptions"
+      [legend]="chartLegend"
+    >
+    </canvas>
+  </mat-card-content>
+</mat-card>

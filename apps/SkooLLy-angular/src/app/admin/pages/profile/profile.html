@@ -1,0 +1,101 @@
+<div class="profile-container" *ngIf="admin">
+  <!-- Banner -->
+  <div class="profile-banner"></div>
+
+  <!-- Avatar and Main Info -->
+  <div class="profile-header">
+    <div class="profile-picture">
+      <img
+      *ngIf="admin.profilePic"
+        [src]="admin.profilePic || '../../../../assets/images/profile_picture.png'"
+        alt="Profile Picture" 
+        class="avatar" 
+        width="150"
+      >
+      <label for="fileInput" class="upload-label"><mat-icon>camera_alt</mat-icon></label>
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
+    </div>
+
+    <div class="profile-details">
+      <h2>{{ admin.fullName }}</h2>
+      <p class="admin-role">ADMIN</p>
+      <p class="admin-id">ID: {{ admin.staffId }}</p>
+    </div>
+
+    <button mat-raised-button class="edit-btn" routerLink="/admin/settings">
+      <mat-icon>edit</mat-icon>
+      Edit Profile
+    </button>
+  </div>
+
+  <!-- Info Grid -->
+  <div class="info-grid">
+    <div class="info-item">
+      <span>Email</span>
+      <p>{{ admin.email }}</p>
+    </div>
+    <div class="info-item">
+      <span>Phone</span>
+      <p>{{ admin.phone }}</p>
+    </div>
+    <div class="info-item">
+      <span>Gender</span>
+      <p>{{ admin.gender }}</p>
+    </div>
+    <div class="info-item">
+      <span>Class</span>
+      <p>{{ admin.assignedClass }}</p>
+    </div>
+    <div class="info-item">
+      <span>Bio</span>
+      <p>{{ admin.bio || 'Tell us about yourself...' }}</p>
+    </div>
+    <div class="info-item">
+      <span>Address</span>
+      <p>{{ admin.address }}</p>
+    </div>
+    <div class="info-item">
+      <span>Joined</span>
+      <p>{{ admin.createdAt | date:'mediumDate' }}</p>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- <mat-card class="profile-view">
+  <div class="top-section">
+    <img [src]="user?.avatar || '../../../../assets/images/profile_picture.png'" alt="Profile" class="avatar" />
+    <div class="details">
+      <h2>{{ user?.fullName }}</h2>
+      <p class="role">{{ user?.role }}</p>
+      <p>{{ user?.email }}</p>
+    </div>
+  </div>
+
+  <div class="info-section">
+    <h3>📞 Contact Information</h3>
+    <div class="info-item">
+      <strong>Phone:</strong> {{ user?.phone || 'Not provided' }}
+    </div>
+    <div class="info-item">
+      <strong>Email:</strong> {{ user?.email }}
+    </div>
+  </div>
+
+  <div class="info-section">
+    <h3>🏫 School Information</h3>
+    <div class="info-item"><strong>School Name:</strong> {{ user?.school?.name || '—' }}</div>
+    <div class="info-item"><strong>Address:</strong> {{ user?.school?.address || '—' }}</div>
+    <div class="info-item"><strong>State:</strong> {{ user?.school?.state || '—' }}</div>
+    <div class="info-item">
+      <strong>Type:</strong> {{ user?.school?.schoolType?.join(', ') || '—' }}
+    </div>
+  </div>
+
+  <div class="actions">
+    <button mat-raised-button color="primary" routerLink="/admin/settings">
+      ⚙️ Go to Settings
+    </button>
+  </div>
+</mat-card> -->

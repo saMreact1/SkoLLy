@@ -1,0 +1,231 @@
+.back {
+  position: absolute;
+  top: 2rem;
+  left: 4rem;
+
+  mat-icon {
+    color: #fff;
+    width: 30px;
+    height: 25px;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+.auth-container {
+  background-image: url('../../../../assets/images/black-bg.jpeg');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 1rem;
+  min-height: 100vh;
+  background-color: var(--primary-bg);
+  color: var(--primary-text);
+}
+
+.auth-box {
+  background: #ffffff9a;
+  padding: 2rem;
+  margin: 3rem;
+  border-radius: 1rem;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  width: 70%;
+  max-width: 420px;
+  transition: all 0.3s ease;
+
+  .form-toggle {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    button {
+      flex: 1;
+      padding: 0.7rem;
+      border: none;
+      background: transparent;
+      color: var(--primary-text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+
+      &.active {
+        border-bottom: 2px solid var(--accent-color);
+      }
+    }
+  }
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    mat-form-field ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+      background-color: transparent;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    button[type='submit'] {
+      margin-top: 1rem;
+      border-radius: 16px;
+
+      &:hover {
+        border: 1px solid #333;
+      }
+    }
+
+    .forgot-password-link {
+      width: max-content;
+      margin: 10px auto;
+      text-align: center;
+      transition: all .3s ease-in-out;
+
+      a {
+        color: #05167a;
+        text-decoration: none;
+        font-size: 14px;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+mat-horizontal-stepper {
+  background: transparent;
+  
+  mat-form-field ::ng-deep .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent;
+  }
+
+  ::ng-deep .mat-horizontal-content-container {
+    padding: 0 5px 24px 5px;
+  }
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  justify-content: space-between;
+}
+::ng-deep .mat-step-header .mat-step-icon {
+  // background-color: var(--accent-color);
+  color: white;
+}
+::ng-deep .mat-stepper-horizontal-line {
+  border-top: 2px dashed var(--accent-color);
+}
+
+.mat-step {
+  transition: all 0.4s ease-in-out;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.file-input {
+  padding-top: 10px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+}
+
+.step-actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    min-width: 100px;
+    border-radius: 16px;
+
+    &:hover {
+      border: 1px solid #333;
+    }
+  }
+
+  .mobile {
+    display: none;
+  }
+}
+
+//
+// 🔥 RESPONSIVE MEDIA QUERIES
+//
+
+@media (max-width: 768px) {
+  .auth-box {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .form-toggle button {
+    font-size: 14px;
+    padding: 0.5rem;
+  }
+
+  .auth-form h2 {
+    font-size: 20px;
+  }
+
+  .step-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+
+    button {
+      width: 100%;
+    }
+
+    .mobile {
+      display: block;
+    }
+    .desktop {
+      display: none;
+    }
+  }
+
+  .back {
+    top: 1rem;
+    left: 1.5rem;
+
+    mat-icon {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 1.2rem;
+  }
+
+  .auth-form {
+    gap: 1rem;
+  }
+
+  .auth-form h2 {
+    font-size: 18px;
+  }
+
+  .forgot-password-link a {
+    font-size: 13px;
+  }
+
+  ::ng-deep .mat-step-header .mat-step-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+  }
+}

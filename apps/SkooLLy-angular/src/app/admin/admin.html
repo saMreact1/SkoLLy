@@ -1,0 +1,95 @@
+<div class="dashboard-layout">
+    <aside [class.collapsed]="collapsed" class="sidebar">
+        <div class="logo">
+            <img *ngIf="schoolLogo" [src]="schoolLogo" alt="Logo" class="logo-img">
+            <span>{{ schoolName }}</span>
+            
+            <button class="toggle-btn" mat-icon-button (click)="toggleSidebar()">
+                <mat-icon>{{ collapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+            </button>
+        </div>
+
+        <nav>
+            <a mat-button routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <mat-icon>dashboard</mat-icon> 
+                <span>Dashboard</span>
+            </a>
+
+            <a mat-button routerLink="/admin/teachers" routerLinkActive="active">
+                <mat-icon>group</mat-icon> 
+                <span>Teachers</span>
+            </a>
+
+            <a mat-button routerLink="/admin/students" routerLinkActive="active">
+                <mat-icon>school</mat-icon> 
+                <span>Students</span>
+            </a>
+            
+            <a mat-button routerLink="/admin/notices" routerLinkActive="active">
+                <mat-icon>campaign</mat-icon>
+                <span>Notices</span>
+            </a>
+
+            <a mat-button routerLink="/admin/classes" routerLinkActive="active">
+                <mat-icon>group</mat-icon>
+                <span>Classes</span>
+            </a>
+
+            <a mat-button routerLink="/admin/subjects" routerLinkActive="active">
+                <mat-icon>menu_book</mat-icon>
+                <span>Subjects</span>
+            </a>
+
+            <a mat-button routerLink="/admin/timetable" routerLinkActive="active">
+                <mat-icon>calendar_today</mat-icon>
+                <span>Timetable</span>
+            </a>
+
+            <a mat-button routerLink="/admin/results" routerLinkActive="active">
+                <mat-icon>emoji_events</mat-icon>
+                <span>Results</span>
+            </a>
+
+            <a mat-button routerLink="/admin/payments" routerLinkActive="active">
+                <mat-icon>money</mat-icon>
+                <span>Fees & Invoices</span>
+            </a>
+
+            <a mat-button routerLink="/admin/receipts" routerLinkActive="active">
+                <mat-icon>receipt</mat-icon>
+                <span>Transactions</span>
+            </a>
+
+            <a mat-button routerLink="/admin/profile" class="profile">
+                <mat-icon>person</mat-icon>
+                <span>My Profile</span>
+            </a>
+        </nav>
+    </aside>
+
+    <div class="main">
+        <header class="topbar-user">
+            <div></div>
+            <div class="right">
+                <mat-icon class="notify">notifications</mat-icon>
+                <img class="avatar" [src]="'../../assets/images/profile_picture.png'" alt="User" [matMenuTriggerFor]="userMenu">
+
+                <mat-menu #userMenu="matMenu">
+                    <button mat-menu-item (click)="goToSettings()">
+                        <mat-icon>settings</mat-icon>
+                        <span>Settings</span>
+                    </button>
+
+                    <button mat-menu-item (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </div>
+        </header>
+
+        <main class="content">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

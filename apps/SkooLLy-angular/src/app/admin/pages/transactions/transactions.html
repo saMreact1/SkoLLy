@@ -1,0 +1,85 @@
+<mat-card>
+  <h2>📋 Payment Transactions</h2>
+
+  <div class="filter-bar">
+    <mat-form-field appearance="outline">
+      <mat-label>Search Invoice / Student</mat-label>
+      <input matInput [(ngModel)]="searchQuery" placeholder="e.g. John, INV-1001" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="statusFilter">
+        <mat-option value="">All</mat-option>
+        <mat-option value="Success">Success</mat-option>
+        <mat-option value="Pending">Pending</mat-option>
+        <mat-option value="Failed">Failed</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" />
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>End Date</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" />
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="table-container">
+    <table mat-table [dataSource]="transactions" class="mat-elevation-z1">
+        <!-- Invoice No -->
+        <ng-container matColumnDef="invoiceNo">
+        <th mat-header-cell *matHeaderCellDef> Invoice # </th>
+        <td mat-cell *matCellDef="let tx"> {{ tx.invoiceNo }} </td>
+        </ng-container>
+
+        <!-- Student -->
+        <ng-container matColumnDef="student">
+        <th mat-header-cell *matHeaderCellDef> Student </th>
+        <td mat-cell *matCellDef="let tx"> {{ tx.studentName }} </td>
+        </ng-container>
+
+        <!-- Amount -->
+        <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Amount Paid </th>
+        <td mat-cell *matCellDef="let tx"> ₦{{ tx.amount | number }} </td>
+        </ng-container>
+
+        <!-- Date -->
+        <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let tx"> {{ tx.date | date:'mediumDate' }} </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let tx">
+            <mat-chip [color]="tx.status === 'Success' ? 'primary' : 'warn'" selected>
+            {{ tx.status }}
+            </mat-chip>
+        </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Receipt </th>
+        <td mat-cell *matCellDef="let tx">
+            <button mat-icon-button color="accent" (click)="viewReceipt(tx)">
+            <mat-icon>receipt_long</mat-icon>
+            </button>
+        </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</mat-card>

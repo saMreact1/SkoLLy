@@ -1,0 +1,19 @@
+:root {
+    --primary-bg: #ffffff;
+    --primary-text: #222;
+    --primary-text-trans: #222222f6;
+    --secondary-bg: #f9f9f9;
+    --accent-color: #3f51b5;
+    --card-bg: #fff;
+    --border-light: #e0e0e0;
+}
+
+.dark-theme {
+    --primary-bg: #121212;
+    --primary-text: #ffffff;
+    --primary-text-trans: #ffffffee;
+    --secondary-bg: #1f1f1f;
+    --accent-color: #66ffcc;
+    --card-bg: #121212;
+    --border-light: #333;
+}

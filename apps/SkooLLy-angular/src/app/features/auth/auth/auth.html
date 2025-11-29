@@ -1,0 +1,211 @@
+<div class="back">
+    <mat-icon routerLink="">west</mat-icon>
+</div>
+
+<div class="auth-container">
+    <div class="auth-box" [class.register]="!isLogin">
+        <div class="form-toggle">
+            <button [class.active]="isLogin" (click)="isLogin = true">Login</button>
+            <button [class.active]="!isLogin" (click)="isLogin = false">Register</button>
+        </div>
+
+        <form [formGroup]="loginForm" *ngIf="isLogin" (submit)="onLogin()" class="auth-form">
+            <h2>Welcome Back</h2>
+            <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email"/>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" type="password"/>
+            </mat-form-field>
+
+            <button mat-flat-button color="accent" type="submit" [disabled]="loginForm.invalid">Login</button>
+
+            <div class="forgot-password-link">
+                <a routerLink="/forgot-password">Forgot Password?</a>
+            </div>
+        </form>
+
+        <mat-horizontal-stepper *ngIf="!isLogin" [linear]="isLinear" [(selectedIndex)]="step">
+            <!-- Step 1: Basic Info -->
+            <mat-step [stepControl]="basicInfoForm" class="mat-step">
+                <form [formGroup]="basicInfoForm">
+                    <!-- <ng-template matStepLabel>Basic Info</ng-template> -->
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email">
+                        <mat-error *ngIf="basicInfoForm.get('email')?.invalid">
+                            Please enter a valid email.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>School Name</mat-label>
+                        <input matInput formControlName="schoolName">
+                    </mat-form-field>
+
+                    <div class="step-actions">
+                        <button mat-flat-button color="primary" (click)="goToNextStep()"
+                            [disabled]="basicInfoForm.invalid"
+                        >
+                            Continue
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!-- Step 2: School Info (conditionally rendered later) -->
+            <mat-step *ngIf="!schoolExists && !emailExists" [stepControl]="schoolInfoForm" class="mat-step">
+                <form [formGroup]="schoolInfoForm">
+                    <!-- <ng-template matStepLabel>School Info</ng-template> -->
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>School Email</mat-label>
+                        <input matInput formControlName="schoolEmail">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>School Phone</mat-label>
+                        <input matInput formControlName="schoolPhone">
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>School Address</mat-label>
+                        <input matInput formControlName="address">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>School Type</mat-label>
+                        <mat-select formControlName="schoolType" multiple>
+                            <mat-option value="nursery">Nursery</mat-option>
+                            <mat-option value="primary">Primary</mat-option>
+                            <mat-option value="secondary">Secondary</mat-option>
+                            <mat-option value="college">College</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>State</mat-label>
+                        <input matInput formControlName="state">
+                    </mat-form-field>
+
+                    <div class="form-group">
+                        <label for="schoolLogo">Upload School Logo</label>
+                        <input
+                            type="file"
+                            id="schoolLogo"
+                            (change)="onLogoSelected($event)"
+                            class="file-input"
+                            accept="image/*"
+                        />
+                    </div>
+
+                    <div class="step-actions">
+                        <button mat-button matStepperPrevious class="desktop">Back</button>
+                        <button 
+                            mat-flat-button color="primary"
+                            [disabled]="schoolInfoForm.invalid"
+                            matStepperNext
+                        >
+                            Continue
+                        </button>
+                        
+                        <button mat-button matStepperPrevious class="mobile">Back</button>
+                    </div>
+                </form>
+            </mat-step>
+
+
+            <!-- Step 3: Personal Info -->
+            <mat-step [stepControl]="personalInfoForm" class="mat-step">
+                <form [formGroup]="personalInfoForm" (submit)="onRegister()">
+                    <!-- <ng-template matStepLabel>Personal Info</ng-template> -->
+                    
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Full Name</mat-label>
+                        <input matInput formControlName="fullName">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Phone Number</mat-label>
+                        <input matInput formControlName="phone">
+                        <mat-hint>11 digits (e.g. 09053237723)</mat-hint>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender">
+                            <mat-option value="male">Male</mat-option>
+                            <mat-option value="female">Female</mat-option>
+                            <mat-option value="others">Prefer not to say</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Bio</mat-label>
+                        <textarea name="bio" formControlName="bio" matInput placeholder="Tell us about yourself..."></textarea>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dob" />
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Select Role</mat-label>
+                        <mat-select formControlName="role">
+                            <mat-option value="admin" [disabled]="schoolExists">Admin</mat-option>
+                            <mat-option value="teacher" [disabled]="!schoolExists">Teacher</mat-option>
+                            <mat-option value="student" [disabled]="!schoolExists">Student</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field *ngIf="personalInfoForm.get('role')?.value === 'student'" appearance="fill" class="full-width">
+                        <mat-label>Select Class</mat-label>
+                        <mat-select formControlName="classId">
+                            <mat-option *ngFor="let c of availableClasses" [value]="c._id">
+                            {{ c.name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="form-group">
+                        <label for="profilePic">Upload Profile Picture</label>
+                        <input
+                            type="file"
+                            id="profilePic"
+                            (change)="onPicSelected($event)"
+                            class="file-input"
+                            accept="image/*"
+                        />
+                    </div>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input matInput formControlName="password" type="password">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput formControlName="confirmPassword" type="password">
+                        <mat-error *ngIf="personalInfoForm.errors?.['mismatch']">
+                            Password do not match!
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="step-actions">
+                        <button mat-button matStepperPrevious class="desktop">Back</button>
+                        <button mat-flat-button color="accent" type="submit" [disabled]="personalInfoForm.invalid">
+                            Complete Registration
+                        </button>
+                        <button mat-button matStepperPrevious class="mobile">Back</button>
+                    </div>
+                </form>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+package-lock.json
+
+# Turbo
+.cache/
+dist/
+build/
+
+# IDEs
+.vscode/
+.DS_Store
+
+# Angular
+apps/*/dist/
+apps/*/out-tsc/

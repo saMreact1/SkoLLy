@@ -1,0 +1,40 @@
+<mat-card class="notices-page-card">
+  <div class="notices-header">
+    <h2>📢 All Notices</h2>
+    <button mat-flat-button color="primary" (click)="addNotice()">+ Add Notice</button>
+  </div>
+
+    <div class="notice-row" *ngFor="let notice of notices; let i = index">
+        <div class="notice-info">
+            <input
+                class="notice-title"
+                [(ngModel)]="notice.title"
+                (blur)="onNoticeUpdated(i)"
+                placeholder="Untitled notice"
+            />
+            <textarea
+                class="notice-description"
+                [(ngModel)]="notice.content"
+                (blur)="onNoticeUpdated(i)"
+                placeholder="Add description..."
+            ></textarea>
+            <div class="meta">
+                <div>
+                    <span class="notice-tag" [ngClass]="notice.tag">{{ notice.tag }}</span>
+                    <span class="notice-date">{{ notice.date | date: 'mediumDate' }}</span>
+                </div>
+
+                <div class="notice-actions">
+                    <button mat-icon-button color="warn" (click)="confirmDeleteNotice(notice._id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="notices.length === 0" class="empty-state">
+        <img src="../../../../assets/illustrations/empty-class.svg" alt="No classes" />
+        <p>No Notices yet. Click the button above to add your first one.</p>
+    </div>
+</mat-card>

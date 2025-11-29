@@ -1,0 +1,39 @@
+:host {
+  display: block;
+  padding: 1rem;
+  max-width: 100%;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+mat-dialog-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+
+  button {
+    min-width: 100px;
+  }
+}
+
+textarea {
+  resize: vertical;
+}

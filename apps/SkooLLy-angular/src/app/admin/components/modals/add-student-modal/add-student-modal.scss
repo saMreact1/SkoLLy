@@ -1,0 +1,33 @@
+.modal-title {
+  font-weight: bold;
+  border-bottom: 1px solid #aaa4a4;
+  margin: 1rem;
+  padding: 0 0 .5rem;
+}
+
+.add-student-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-content form {
+  padding-top: 1rem;
+}
+
+mat-spinner {
+  margin-right: 8px;
+}

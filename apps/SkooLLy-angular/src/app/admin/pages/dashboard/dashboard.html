@@ -1,0 +1,49 @@
+<section class="overview">
+  <app-overview-card
+    title="Total Students"
+    icon="school"
+    [value]="totalStudents"
+  ></app-overview-card>
+
+  <app-overview-card
+    title="Total Teachers"
+    icon="group"
+    [value]="totalTeachers"
+  ></app-overview-card>
+
+  <app-overview-card
+    title="Attendance Today"
+    icon="event_available"
+    [value]="attendanceToday"
+  >%</app-overview-card>
+</section>
+
+<section class="chart-grid">
+  <app-chart-widget
+    title="Students by Class"
+    [chartType]="'pie'"
+    [chartData]="classData"
+    [chartLegend]="true"
+    [chartLabels]="classLabels"
+  ></app-chart-widget>
+
+  <app-notice-board></app-notice-board>
+</section>
+
+<section class="chart-grid">
+  <app-chart-widget
+    title="Gender Distribution"
+    [chartType]="'doughnut'"
+    [chartData]="genderData"
+    [chartLegend]="true"
+    [chartLabels]="genderLabels"
+  ></app-chart-widget>
+
+  <app-chart-widget
+    title="Weekly Attendance"
+    [chartType]="'line'"
+    [chartData]="attendanceData"
+    [chartLegend]="true"
+    [chartLabels]="attendanceLabels"
+  ></app-chart-widget>
+</section>

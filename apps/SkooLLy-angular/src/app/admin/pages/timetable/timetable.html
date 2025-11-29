@@ -1,0 +1,59 @@
+<mat-card class="timetable">
+  <div class="header">
+    <h2>📅 Weekly Timetable</h2>
+    <div class="row-actions" *ngIf="selectedClass">
+      <button mat-raised-button color="primary" (click)="addRow()">➕ Add Slot</button>
+    </div>
+
+    <!-- Dropdown for classes -->
+    <mat-form-field appearance="outline" class="class-select">
+      <mat-label>Select Class</mat-label>
+      <mat-select [(value)]="selectedClass" (selectionChange)="onClassChange()">
+        <mat-option *ngFor="let cls of classes" [value]="cls._id">
+          {{ cls.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="timetable-wrapper" #timetableWrapper>
+    <h2 *ngIf="selectedClass">{{ selectedClassName }} - Timetable</h2>
+
+    <div class="timetable-grid" *ngIf="selectedClass">
+      <!-- Days headers -->
+      <div class="day-header"></div>
+      <div class="day-header" *ngFor="let day of days">{{ day }}</div>
+
+      <!-- Timetable rows -->
+      <div class="time-row" *ngFor="let time of times; let i = index">
+        <div class="time-label">
+          {{ time }}
+          <button mat-icon-button color="warn" (click)="removeRow(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+          <div
+              class="time-slot"
+              *ngFor="let day of days"
+              (click)="openSubjectSelector(day, time)"
+          >
+          <div
+              class="class-block"
+              *ngIf="getClasses(day, time).length > 0"
+              [style.background]="getClasses(day, time)[0].color"
+          >
+              {{ getClasses(day, time)[0].subjectName }}
+          </div>
+          <div *ngIf="getClasses(day, time).length === 0" class="empty-slot">
+              +
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions" *ngIf="selectedClass">
+    <button mat-stroked-button color="primary" (click)="downloadPDF()">Download PDF</button>
+    <button mat-stroked-button color="accent" (click)="downloadExcel()">Download Excel</button>
+  </div>
+</mat-card>

@@ -1,0 +1,16 @@
+<header class="skoolly-header">
+  <div class="logo">SkooLLy</div>
+  <nav class="nav-links">
+    <a routerLink="/">Home</a>
+    <a routerLink="/about">About</a>
+    <a routerLink="/contact">Contact</a>
+  </nav>
+
+  <div class="menu-toggle" (click)="toggleMenu = !toggleMenu">&#9776;</div>
+
+  <div class="mobile-menu" [class.active]="toggleMenu">
+    <a routerLink="/">Home</a>
+    <a routerLink="/about">About</a>
+    <a routerLink="/contact">Contact</a>
+  </div>
+</header>

@@ -1,0 +1,19 @@
+<mat-card class="notice-card">
+  <div class="notice-header">
+    <h3>📝 Notice Board</h3>
+    <!-- <button mat-icon-button matTooltip="Add Notice" (click)="addNotice()">
+      <mat-icon>add_circle</mat-icon>
+    </button> -->
+  </div>
+
+  <div class="notice-list">
+    <div class="notice" *ngFor="let notice of notices">
+      <div class="notice-header">
+        <h4>{{ notice.title }}</h4>
+        <span class="tag">{{ notice.tag }}</span>
+      </div>
+      <p>{{ notice.content }}</p>
+      <span class="notice-date">{{ notice.date | date: 'mediumDate' }}</span>
+    </div>
+  </div>
+</mat-card>

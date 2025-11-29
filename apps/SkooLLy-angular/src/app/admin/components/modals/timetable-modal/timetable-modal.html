@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Select Subject</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" class="w-full">
+    <mat-label>Subject</mat-label>
+    <mat-select [(ngModel)]="selected">
+      <mat-option *ngFor="let subj of data.subjects" [value]="subj">
+        {{ subj.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="confirm()" [disabled]="!selected">OK</button>
+</mat-dialog-actions>

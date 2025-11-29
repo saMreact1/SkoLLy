@@ -1,0 +1,83 @@
+<h2 mat-dialog-title class="modal-title">➕ Add Student</h2>
+
+<mat-dialog-content class="modal-content">
+  <form [formGroup]="studentForm">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="fullName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="classId">
+        <mat-option *ngFor="let cls of classes" [value]="cls._id">
+          {{ cls.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Optional extra fields -->
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dob" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password"/>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" (click)="submit()">Save</button>
+</mat-dialog-actions>
+
+
+<!-- <h2 mat-dialog-title>Add New Student</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form">
+  <mat-form-field appearance="outline">
+    <mat-label>Full Name</mat-label>
+    <input matInput formControlName="name" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Class</mat-label>
+    <input matInput formControlName="class" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Gender</mat-label>
+    <mat-select formControlName="gender">
+      <mat-option value="Male">Male</mat-option>
+      <mat-option value="Female">Female</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="actions">
+    <button mat-stroked-button type="button" (click)="close()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit">Add</button>
+  </div>
+</form> -->

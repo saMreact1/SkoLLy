@@ -1,0 +1,14 @@
+<div class="modal-wrapper">
+  <button mat-icon-button class="close-btn" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="avatar">
+    <img [src]="'https://i.pravatar.cc/150?u=' + data.email" alt="Avatar" />
+  </div>
+
+  <h2>{{ data.fullName }}</h2>
+  <p><strong>Email:</strong> {{ data.email }}</p>
+  <p><strong>Subject:</strong> {{ data.subject }}</p>
+  <p *ngIf="data.date"><strong>Date Joined:</strong> {{ data.date | date }}</p>
+</div>
