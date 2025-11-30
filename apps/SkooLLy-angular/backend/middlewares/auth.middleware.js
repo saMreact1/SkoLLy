@@ -14,12 +14,12 @@ exports.authMiddleware = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // ✅ Include tenantId if it's in the token
+        
         req.user = {
             id: decoded.id,
             email: decoded.email,
             role: decoded.role,
-            tenantId: decoded.tenantId, // 👈 DON'T forget this!
+            tenantId: decoded.tenantId,
         };
 
         next();

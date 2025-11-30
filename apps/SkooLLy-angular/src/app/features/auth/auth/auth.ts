@@ -178,6 +178,11 @@ export class Auth implements OnInit {
         const role = res.user.role;
 
         this.router.navigate([`/${role}`]);
+
+        if(role ==='student') {
+          window.location.href = 'http://localhost:5173?token=' + res.token;
+          console.log('Navigating to student portal...');
+        }
       },
       error: () => {
         this.snack.open('Invalid credentials', '', {
