@@ -38,10 +38,6 @@ export class UserService {
         return this.http.get(`${this.apiUrl}/user/${userId}`);
     }
 
-    getUsersByRole(role: string, tenantId: string) {
-        return this.http.get<any[]>(`${this.apiUrl}/users?role=${role}&tenantId=${tenantId}`);
-    }
-
     getToken() {
         return localStorage.getItem('token');
     }

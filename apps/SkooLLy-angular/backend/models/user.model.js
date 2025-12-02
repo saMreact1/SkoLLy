@@ -8,6 +8,11 @@ const userSchema = new mongoose.Schema({
   bio: { type: String },
   role: { type: String, enum: ['admin', 'teacher', 'student'], required: true },
   tenantId: { type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true },
+  school: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'School',
+    required: false
+  },
   classId: { type: mongoose.Schema.Types.ObjectId, ref: 'Class' },
   password: { type: String, required: true },
   profilePic: String,

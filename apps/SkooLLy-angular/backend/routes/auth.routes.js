@@ -4,7 +4,7 @@ const { authMiddleware } = require('../middlewares/auth.middleware');
 const { register, login, checkSchoolAndEmail, forgotPassword, resetPassword, verifyEmail, resendVerification, getUserProfile } = require('../controllers/auth.controller');
 const upload = require('../config/multer');
 
-router.get("/users", authMiddleware, getUserProfile);
+router.get("/user   ", authMiddleware, getUserProfile);
 router.post('/register', upload.single('logo'), register);
 router.post('/login', login);
 router.post('/check', checkSchoolAndEmail);

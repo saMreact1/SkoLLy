@@ -11,6 +11,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/auth', require('./routes/auth.routes'));
+app.use('/users', require('./routes/user.routes'));
 app.use('/admin', require('./routes/admin.routes'));
 app.use('/teachers', require('./routes/teacher.routes'));
 app.use('/students', require('./routes/student.routes'));
