@@ -5,6 +5,7 @@ import { EditProfileModal } from '../../components/modals/edit-profile-modal/edi
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { UserService } from '../../../core/services/user.service';
 
 @Component({
   selector: 'app-profile',
@@ -25,20 +26,25 @@ export class Profile {
   loading: boolean = true;
 
   constructor(
-    // private user: UserService,
+    private user: UserService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    // this.user.getUserProfile().subscribe({
-    //   next: (res) => {
-    //     this.admin = res;
-    //     this.loading = false;
-    //   },
-    //   error: () => {
-    //     this.loading = false;
-    //   }
-    // });
+    this.user.getUserProfile().subscribe({
+      next: (res) => {
+        this.admin = res;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
+    // this.admin = this.user.getLocalUser();
+    // this.loading = false;
+
+    console.log(this.admin);
+    
   }
 
   editProfile() {
@@ -60,14 +66,14 @@ export class Profile {
     const formData = new FormData();
     formData.append('profilePic', file);
 
-    // this.user.uploadProfilePic(formData).subscribe({
-    //   next: (res: any) => {
-    //     this.admin.profilePic = res.profilePic; // ✅ use res.profilePic
-    //     console.log('Updated teacher:', this.admin);
-    //   },
-    //   error: (err) => {
-    //     console.error('Upload failed', err);
-    //   }
-    // });
+    this.user.uploadProfilePic(formData).subscribe({
+      next: (res: any) => {
+        this.admin.profilePic = res.profilePic; // ✅ use res.profilePic
+        console.log('Updated teacher:', this.admin);
+      },
+      error: (err) => {
+        console.error('Upload failed', err);
+      }
+    });
   }
 }
