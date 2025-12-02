@@ -2,10 +2,31 @@ import { FaSearch } from "react-icons/fa"
 import { IoIosArrowDown } from "react-icons/io";
 import { useLocation } from "react-router-dom";
 
-const HeaderBar = () => {
-  const pathname = useLocation().pathname;
+import type { UserProps } from "../../types/student";
+import { useNotifications } from "../../hooks/useStudents";
+import { useNotificationStore } from "../../store/authStore";
+import { useState } from "react";
+import NotificationDropDown from "./NotificationDropDown";
+
+const HeaderBar = ({...user}: UserProps) => {
+  const pathname = useLocation().pathname; 
+  const [showNotification, setShowNotification] = useState(false);
+   const {
+      data: notifications,
+    } = useNotifications();
+  
+    const allNotifications = useNotificationStore(
+      (state) => (state.notification = notifications)
+    );
+    const handleOnClick = () => {
+      setShowNotification(!showNotification);
+    }
+
+   
+  
   return (
-    <div className="min-w-full bg-translate py-2 px-8">
+    <div 
+    className="min-w-full bg-translate py-2 px-8">
       <div className="flex justify-between items-center">
         <div className="flex relative items-center">
           <input 
@@ -27,15 +48,23 @@ const HeaderBar = () => {
         </div>
 
         {/* notifications */}
-        <div className="bg-slate-950/70 lg:px-2 lg:py-2 rounded-full hover:bg-slate-700 md:px-2 md:py-1 cursor-pointer flex items-center space-x-4">
-          <div className="relative">
+        <div
+        className="bg-slate-950/70 lg:px-2 lg:py-2 rounded-full hover:bg-slate-700 md:px-2 md:py-1 cursor-pointer flex items-center space-x-4">
+          <div  onClick={handleOnClick}  className="relative">
             <svg xmlns="http://www.w3.org/2000/svg" className="md:h-4 md:w-4 h-6 w-6 text-slate-100 hover:cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
             </svg>
             <div className="absolute -top-1 -right-1 bg-red-500 rounded-full w-4 h-4 flex items-center justify-center md:w-3 md:h-3 md:top-0 md:-right-3">
-              <span className="text-white text-xs font-bold">3</span>
+              <span className="text-white text-xs font-bold">{allNotifications?.length}</span>
             </div>
           </div>
+           {/* dropdown */}
+          { showNotification && (
+            <div className="absolute z-9999 top-25 right-5 w-[350px] bg-black px-4 py-4 rounded-md transition-all duration-2000 mt-2 shadow-lg ease-in-out">
+              <NotificationDropDown notifications={allNotifications}/>
+            </div>
+          ) }
+         
         </div>
         {/* profile */}
         <div className="bg-black px-2 text-slate-100 py-2 md:py-1 rounded-full hover:bg-slate-100 hover:text-black cursor-pointer">
@@ -43,9 +72,10 @@ const HeaderBar = () => {
             <img src="/school-logo.png" 
             className="rounded-full w-10 h-10 inline-block mr-2 md:size-8"
             alt="profile image" />
-            <span className="font-medium text-lg md:text-sm">John Doe</span>
+            <span className="font-medium text-lg md:text-sm">{user.user?.fullName}</span>
             <IoIosArrowDown className="md:text-sm"/>
           </div>
+
          
         </div>
         

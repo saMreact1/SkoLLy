@@ -1,6 +1,11 @@
 const Class = require('../models/class.model');
 const School = require('../models/school.model');
 const Teacher = require('../models/teacher.model');
+const User = require("../models/user.model");
+const mongoose = require("mongoose");
+
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 // GET all classes for the logged-in user's tenant (school)
 exports.getClasses = async (req, res) => {
@@ -48,7 +53,25 @@ exports.createClass = async (req, res) => {
   }
 };
 
+exports.getCurrentUserClasses = async(req, res) => {
+  const { id, tenantId } = req.user;
 
+  try {
+    const user = await User.findById(id);
+
+      // Convert tenantId string to ObjectId for the query
+    const userClass = await Class.findOne({
+      schoolId: tenantId,
+      _id: user.classId
+    }).select('-students');
+
+    return res.status(200).json(userClass)
+
+  } catch (error) {
+    console.log("Error occurred in get user current user controller", error.message)
+    res.status(500).json({message: "Server error, could not complete this operation"});
+  }
+}
 // GET classes by school name (for pre-registration lookup)
 exports.getClassesByTenantId = async (req, res) => {
   try {

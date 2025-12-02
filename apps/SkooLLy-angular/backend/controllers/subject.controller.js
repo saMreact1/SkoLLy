@@ -8,7 +8,7 @@ exports.getSubject = async (req, res) => {
 
     const subjects = await Subject.find({ tenantId })
       .populate('teacher', 'fullName email');
-    res.json(subjects);
+    res.status(200).json({subjects});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

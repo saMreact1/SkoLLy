@@ -23,7 +23,6 @@ exports.saveTimetable = async (req, res) => {
 exports.getTimetable = async (req, res) => {
   try {
     const { classId } = req.params;
-
     const doc = await Timetable.findOne({ classId });
     return res.json({ data: doc ? doc.grid : {} });
   } catch (err) {

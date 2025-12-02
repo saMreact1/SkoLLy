@@ -41,7 +41,6 @@ const handleLogout = (e: React.FormEvent) => {
 
 const Sidebar = () => {
   const pathname = useLocation().pathname;
-  console.log("Current Pathname:", pathname);
   return (
     <div className="bg-black min-h-full rounded-r-sm w-48">
       <div className="flex flex-col py-2 md:px-4 lg:px-3 text-white justify-between h-full">
@@ -57,8 +56,8 @@ const Sidebar = () => {
                 href={link.path}
                 className={`flex gap-2 px-4 items-center py-2 rounded-lg ${
                   pathname === link.path
-                    ? "bg-[#dcdada] text-slate-700 rounded-b-3xl rounded-t-3xl w-[280px]"
-                    : "hover:bg-slate-700 transition-all duration-200 hover:ml-2"
+                    ? "bg-[#dcdada] text-slate-700 rounded-b-3xl rounded-t-3xl w-[280px] "
+                    : "hover:bg-slate-700 transition-all duration-200 hover:ml-2 hover:shadow-sm"
                 }`}
               >
                 <span>

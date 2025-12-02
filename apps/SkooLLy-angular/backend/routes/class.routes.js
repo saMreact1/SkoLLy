@@ -6,6 +6,7 @@ const { authMiddleware } = require('../middlewares/auth.middleware');
 
 router.post('/', authMiddleware, classController.createClass);
 router.get('/', authMiddleware, classController.getClasses);
+router.get('/class', authMiddleware, classController.getCurrentUserClasses);
 router.get('/school/:tenantId', classController.getClassesByTenantId);
 router.get('/:id/students', authMiddleware, classController.getClassStudents);
 router.put('/:id', authMiddleware, classController.updateClass);

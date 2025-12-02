@@ -9,7 +9,7 @@ import {  GridLoader } from "react-spinners";
 
 const Loader = () => {
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-[#dcdcdc]">
+    <div className="bg-[#dcdcdc]">
         <GridLoader />
     </div>
   )
