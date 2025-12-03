@@ -45,39 +45,83 @@ exports.getUser = async (req, res) => {
 //   }
 // };
 
-exports.updateProfile = async (req, res) => {
-  const userId = req.user.id; // 🔧 use `id`, not `_id`
-  const { fullName, email, password } = req.body;
+// exports.updateProfile = async (req, res) => {
+//   const userId = req.user.id; // 🔧 use `id`, not `_id`
+//   const { fullName, email, password, bio, phone } = req.body;
 
-  if (!userId) {
-    return res.status(400).json({ message: 'Invalid user ID in token' });
+//   if (!userId) {
+//     return res.status(400).json({ message: 'Invalid user ID in token' });
+//   }
+
+//   try {
+//     const updateData = {
+//       ...(fullName && { fullName }),
+//       ...(email && { email }),
+//       ...(phone && { phone }),
+//       ...(phone && { phone }),
+//     };
+
+//     // Optional: If you want to allow password change, handle it here
+//     if (password && password.trim() !== "") {
+//       const hashedPassword = await bcrypt.hash(password, 10);
+//       updateData.password = hashedPassword;
+//     }
+
+//     if (req.file) {
+//       req.body.profilePic = `/uploads/${req.file.filename}`;
+//     }
+
+//     const updatedUser = await User.findByIdAndUpdate(
+//       userId,
+//       { $set: updateData },
+//       { new: true, runValidators: true }
+//     );
+
+//     res.status(200).json({ user: updatedUser });
+//   } catch (error) {
+//     console.error(error); // Log actual error
+//     res.status(500).json({ message: 'Failed to update profile', error: error.message });
+//   }
+// };
+
+exports.updateProfile = async (req, res) => {
+  const userId = req.user.id;
+
+  const { fullName, email, password, bio, phone } = req.body;
+
+  if(!userId) {
+    return res.status(400).json({ message: "Invalid user ID in token" });
   }
 
   try {
-    const updateData = {
-      ...(fullName && { fullName }),
-      ...(email && { email }),
-    };
+    const updateData = {};
 
-    // Optional: If you want to allow password change, handle it here
-    if (password && password.trim() !== "") {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      updateData.password = hashedPassword;
+    if(fullName) updateData.fullName = fullName.trim();
+    if(email) updateData.email = email.trim();
+    if(bio) updateData.bio = bio.trim();
+    if(phone) updateData.phone = phone.trim();
+
+    if(password && password.trim() !== "") {
+      updateData.password = await bcrypt.hash(password, 10);
     }
-
-    if (req.file) {
-      req.body.profilePic = `/uploads/${req.file.filename}`;
+    if(req.file) {
+      updateData.profilePic = `/uploads/${req.file.filename}`;
     }
-
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $set: updateData },
-      { new: true, runValidators: true }
+      {  new: true, runValidators: true }
     );
-
-    res.status(200).json({ user: updatedUser });
+    if(!updatedUser) {
+      return res.status(404).json({message: "User not found"})
+    }
+    res.status(200).json({
+      user: updatedUser
+    });
   } catch (error) {
-    console.error(error); // Log actual error
-    res.status(500).json({ message: 'Failed to update profile', error: error.message });
+    console.error("Update Profile error:", error.message);
+    res.status(500).json({
+      message: "Failed to update profile",
+    });
   }
-};
+}

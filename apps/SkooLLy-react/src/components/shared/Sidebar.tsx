@@ -12,6 +12,9 @@ import { FaBookAtlas,  FaGears, FaGraduationCap, FaLocationPin, FaRegCalendar } 
 import { useLocation } from "react-router-dom";
 import { LoginPageUrl } from "../../utils/helper";
 import toast from "react-hot-toast";
+import { useSchoolStore } from "../../store/authStore";
+import { useSchools } from "../../hooks/useStudents";
+import { useEffect } from "react";
 
 const sidebarLinks = [
   { name: "Home", path: "/", icon: <FaHome /> },
@@ -40,13 +43,24 @@ const handleLogout = (e: React.FormEvent) => {
 }
 
 const Sidebar = () => {
+  const { data: schoolInfo } = useSchools();
+  const school = useSchoolStore((state) => (state.school));
+  const setSchool = useSchoolStore((state) => (state.setSchool));
+
+  const schoolLogo = school?.name === undefined ? "Logo" : `${school?.name[0]} ${school?.name[1]} ${school?.name[2]}`
+
+  useEffect(() => {
+    if(schoolInfo) {
+      setSchool(schoolInfo)
+    }
+  }, [schoolInfo, setSchool])
   const pathname = useLocation().pathname;
   return (
     <div className="bg-black min-h-full rounded-r-sm w-48">
       <div className="flex flex-col py-2 md:px-4 lg:px-3 text-white justify-between h-full">
         <div className="flex items-center space-x-2 text-2xl font-bold mb-8">
           <FaGraduationCap />
-          <h1 className="uppercase">Logo</h1>
+          <h1 className="uppercase">{schoolLogo}</h1>
         </div>
         <div className="flex-1 flex-wrap">
           <div className="flex-col space-y-4">

@@ -48,7 +48,6 @@ const Home = () => {
     (state) => (state.notification = notifications)
   );
 
-  console.log(allNotifications);
 
   if (error) toast.error(error.message);
 
