@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaSave, FaSpinner, FaUpload, FaUser } from "react-icons/fa";
+import { FaSave, FaSpinner, } from "react-icons/fa";
 import { useClasses, useSchools, useStudents } from "../hooks/useStudents";
 import { useAuthStore, useClassesStore, useSchoolStore } from "../store/authStore";
 import Loader from "../components/shared/Loader";
