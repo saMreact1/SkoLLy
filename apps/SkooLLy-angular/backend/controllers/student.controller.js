@@ -2,6 +2,7 @@ const Student = require('../models/student.model');
 const User = require('../models/user.model');
 const Class = require('../models/class.model');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 exports.getAllStudents = async (req, res) => {
   try {
@@ -30,22 +31,39 @@ exports.createStudent = async (req, res) => {
       schoolName
     });
 
-    await student.save({ session });
+    const { email, fullName, phone, gender, password, classId } = req.body;
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      email,
+      fullName,
+      phone, 
+      gender,
+      tenantId: admin.tenantId._id,
+      role: "student",
+      password: hashedPassword,
+      classId
+    });
+
+    
+    await student.save({ session });
+    await user.save({ session });
+    
     if (!req.body.classId) {
       throw new Error('Class ID is required');
     }
-
+    
     const updatedClass = await Class.findByIdAndUpdate(
       req.body.classId,
       { $push: { students: student._id } },
       { new: true, session }
     );
-
+    
     if (!updatedClass) {
       throw new Error('Class not found');
     }
-
+    
     await session.commitTransaction();
     session.endSession();
 

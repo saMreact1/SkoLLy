@@ -2,6 +2,7 @@ const Class = require('../models/class.model');
 const School = require('../models/school.model');
 const Teacher = require('../models/teacher.model');
 const User = require("../models/user.model");
+const Student = require("../models/student.model");
 const mongoose = require("mongoose");
 
 const jwt = require('jsonwebtoken');

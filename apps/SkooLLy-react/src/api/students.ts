@@ -80,3 +80,19 @@ export async function getNotification() {
   const data = await res.json();
   return data;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function updateUserProfile(data: any) {
+  const res = await fetch(`${ApiBaseUrl}/users/update-profile`, {
+    method: "PATCH",
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Failed to update profile");
+  const result = await res.json();
+  return result;
+}

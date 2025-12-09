@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { FaSave } from "react-icons/fa";
+import { FaSave, FaSpinner, } from "react-icons/fa";
 import { useClasses, useSchools, useStudents } from "../hooks/useStudents";
 import { useAuthStore, useClassesStore, useSchoolStore } from "../store/authStore";
 import Loader from "../components/shared/Loader";
 import toast from "react-hot-toast";
 import type { ProfileProps } from "../types/student";
+import { updateUserProfile } from "../api/students";
+
 
 const Profile = () => {
-  const { data: user, isLoading, error }  = useStudents();
-  const student  = useAuthStore(state => state.user = user?.user)
+  const { data: user, isLoading, error, refetch: refetchStudents }  = useStudents();
+  const student  = useAuthStore(state => state.user)
+  const setStudent  = useAuthStore(state => state.setuser)
+  
   const [profileData, setProfileData] = useState<ProfileProps>({
     fullName: "",
     email: "",
@@ -18,14 +22,39 @@ const Profile = () => {
     tenantId: "",
   });
 
-  const { data: classes, isLoading: classLoading } = useClasses();
-  const allClass = useClassesStore((state) => state.classes = classes);
+  const { data: classes, isLoading: classLoading, refetch: refetchClasses } = useClasses();
+  const allClass = useClassesStore((state) => state.classes);
+  const setAllClass = useClassesStore((state) => state.setClasses);
 
-   const { data: schoolInfo, isLoading:schoolInfoLoading } = useSchools();
-    const school = useSchoolStore((state) => (state.school = schoolInfo));
+  const { data: schoolInfo, isLoading:schoolInfoLoading, refetch: refetchSchoolInfo } = useSchools();
+  const school = useSchoolStore((state) => (state.school));
+  const setSchool = useSchoolStore((state) => (state.setSchool));
+  const [updating, setUpdating] = useState(false);
+  // const [updated, setUpdated] = useState(false);
   
-  console.log(school);
+ 
+  const handleUpdatingProfile = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    console.log(profileData)
+    setUpdating(true);
+    try {
+      const updatedProfile = await updateUserProfile(profileData);
 
+      console.log(updatedProfile)
+      refetchClasses()
+      refetchSchoolInfo()
+      refetchStudents()
+      toast.success("Profile updated successfully!");
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error : any) {
+      toast.error(error?.message)
+      console.log(error?.message)
+    } finally {
+      setUpdating(false);
+    }
+    
+  }
 
   const handleValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileData({
@@ -34,11 +63,32 @@ const Profile = () => {
     });
   };
 
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    if(schoolInfo){
+      setSchool(schoolInfo);
+    }
+  }, [schoolInfo, setSchool]);
+
+  useEffect(() => {
+    if(user?.user){
+      setStudent(user.user);
+    }
+  
+  }, [user?.user, setStudent]);
+
   useEffect(() => {
     if (student) {
       setProfileData(student);
     }
+    
   }, [student]);
+
+  useEffect(() => {
+    if(classes) {
+      setAllClass(classes)
+    }
+  }, [classes, setAllClass])
 
   if (error) toast.error(error.message);
 
@@ -53,7 +103,12 @@ const Profile = () => {
         <div className="absolute h-full w-full bg-black/70 rounded-md flex px-2 space-x-2 py-2 shadow-lg">
           <div className="w-2/6 flex flex-col space-y-2 items-center justify-between">
           <img src="/school-logo.png" className="w-15 h-15 rounded-full border-2 border-gray-500" alt="School image" />
-          <img className="w-50 h-30 rounded-xl shadow-md shadow-white " src="/user-image.jpg" alt="student image" />
+          <div className="relative">
+            <img className="w-50 h-30 rounded-xl shadow-md shadow-white" src="/user-image.jpg" alt="student image" />
+            {/* <div className="absolute bg-gray-500/30 h-30 w-full flex z-999999 top-0 rounded-lg items-center justify-center text-2xl text-white hover:block">
+              <FaUpload />
+            </div> */}
+          </div>
           <p className="text-white font-bold uppercase text-sm">Identity Card</p>
           </div>
           <div className="w-4/6 flex flex-col space-y-4">
@@ -78,7 +133,7 @@ const Profile = () => {
                 </p>
                 <p className="flex space-x-1">
                   <span className="">Class: </span>
-                  <span className="font-bold">{allClass?.name}</span>
+                  <span className="font-bold">{allClass?.name || ""}</span>
                 </p>
                 <p className="flex space-x-1">
                   <span className="">Email: </span>
@@ -90,7 +145,7 @@ const Profile = () => {
                 </p>
                 <p className="flex space-x-1">
                   <span className="">Gender: </span>
-                  <span className="font-bold">{profileData.gender.toUpperCase()}</span>
+                  <span className="font-bold">{profileData.gender?.toUpperCase()}</span>
                 </p>
               </div>
             </div>
@@ -130,6 +185,7 @@ const Profile = () => {
                 <input
                   value={profileData.email}
                   onChange={handleValueChange}
+                  disabled
                   type="email"
                   name="email"
                   id="email"
@@ -159,7 +215,7 @@ const Profile = () => {
                   name="class"
                   id="class"
                   disabled
-                  value="shja"
+                  value={allClass?.name || ""}
                   className="border bg-white text-gray-500 rounded-full flex-1 px-3 py-2 font-bold focus:ring-blue-400 active:ring-blue-500"
                 />
               </div>
@@ -177,9 +233,28 @@ const Profile = () => {
                 />
                 {/* <textarea name="phone" id="phone" className="border bg-white rounded-full flex-1 px-3 py-2 font-bold ring-blue-500 focus:ring-blue-400 active:ring-blue-500" rows={2} cols={2}/> */}
               </div>
-              <button className=" bg-black text-xl text-white flex mt-8 py-3 px-4 justify-center gap-4 rounded-full hover:cursor-pointer shadow-lg hover:bg-black/80 items-center">
-                <p>Update Profile</p>
-                <span><FaSave /></span>
+              <button
+              disabled={updating} 
+              onClick={handleUpdatingProfile}
+              type="submit" className={
+                `
+                ${updating ? "bg-black/70 hover:cursor-none" : "bg-black hover:cursor-pointer hover:bg-black/80 "}
+                 bg-black text-xl text-white flex mt-8 py-3 px-4 justify-center gap-4 rounded-full  shadow-lg items-center
+                `
+              }>
+                {
+                  !updating ? (
+                  <>
+                    <p>Update Profile</p>
+                    <span><FaSave /></span>
+                  </>
+                  ) : (
+                    <>
+                    <p>Updating...</p>
+                    <span className="animate-spin"><FaSpinner /></span>
+                    </>
+                  )
+                }
               </button>
             </form>
           </div>

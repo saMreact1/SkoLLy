@@ -45,8 +45,16 @@ export function useTimeTable(classId: string, options={}){
 export function useNotifications(){
     return useQuery({
         queryKey: ['notifications'],
-        queryFn: () => getNotification(),
+        queryFn: getNotification,
         staleTime: 5 * 60 * 1000, // 5 minutes
     });
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// export function useProfileUpdate(data: any){
+//     return useQuery({
+//         queryKey: ['profileUpdate', data],
+//         queryFn: () => updateUserProfile(data),
+//         staleTime: 5 * 60 * 1000, // 5 minutes
+//     });
+// }
 

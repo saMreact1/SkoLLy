@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand';
 
 interface AuthState {
@@ -28,6 +29,10 @@ interface NotificationStore {
     notification: any;
     setNotification : (notification: any) => void;
 }
+// interface UpdateProfileStore {
+//     updateProfile: any;
+//     setUpdateProfile : (updateProfile: any) => void;
+// }
 
 
 export const useAuthStore = create<AuthState>((set) => ({
@@ -60,5 +65,9 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
     notification: null,
     setNotification: (notification) => set({notification}) 
 }));
+// export const useUpdateProfileStore = create<UpdateProfileStore>((set) => ({
+//     updateProfile: null,
+//     setUpdateProfile: (updateProfile) => set({updateProfile}) 
+// }));
 
 
