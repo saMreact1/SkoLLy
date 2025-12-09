@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SchoolService } from '../core/services/school.service';
+import { UserService } from '../core/services/user.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,13 +13,16 @@ export class Admin implements OnInit {
   backendUrl = 'http://localhost:5000/uploads/logos';
 
   collapsed: boolean = false;
-  user: any;
+  admin: any;
   schoolName = '';
   schoolLogo = '';
 
+  loading: boolean = true;
+
   constructor(
     private router: Router,
-    private school: SchoolService
+    private school: SchoolService,
+    private user: UserService
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +36,22 @@ export class Admin implements OnInit {
         console.log('Failed to load profile', err);
       }
     })
+
+    this.getUser();
+  }
+
+  
+
+  getUser() {
+    this.user.getUserProfile().subscribe({
+      next: (res) => {
+        this.admin = res;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
   }
 
   toggleSidebar() {

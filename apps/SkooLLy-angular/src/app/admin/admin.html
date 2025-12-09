@@ -72,7 +72,7 @@
             <div></div>
             <div class="right">
                 <mat-icon class="notify">notifications</mat-icon>
-                <img class="avatar" [src]="'../../assets/images/profile_picture.png'" alt="User" [matMenuTriggerFor]="userMenu">
+                <img class="avatar" [src]="admin.profilePic || '../../../../assets/images/profile_picture.png'" alt="User" [matMenuTriggerFor]="userMenu">
 
                 <mat-menu #userMenu="matMenu">
                     <button mat-menu-item (click)="goToSettings()">

@@ -8,7 +8,7 @@ exports.uploadProfilePic = (req, res) => {
   }
 
   // Save image path to user profile in DB
-  const imageUrl = `/uploads/${req.file.filename}`;
+  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
 
   User.findByIdAndUpdate(req.user.id, { profilePic: imageUrl }, { new: true })
   .then(user => {
