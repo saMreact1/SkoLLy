@@ -1,11 +1,11 @@
 import { DatePipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { EditProfileModal } from '../../components/modals/edit-profile-modal/edit-profile-modal';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../../core/services/user.service';
+import { EditProfile } from '../../../shared/edit-profile/edit-profile';
 
 @Component({
   selector: 'app-profile',
@@ -40,25 +40,36 @@ export class Profile {
         this.loading = false;
       }
     });
-    // this.admin = this.user.getLocalUser();
-    // this.loading = false;
 
     console.log(this.admin);
     
   }
 
   editProfile() {
-    const dialogRef = this.dialog.open(EditProfileModal, {
+    const dialogRef = this.dialog.open(EditProfile, {
       width: '90%',
       maxWidth: '500px',
       panelClass: 'custom-dialog-container',
+      data: this.admin
     });
 
-    // dialogRef.componentInstance.profileUpdated.subscribe((formData: FormData) => {
-    //   this.user.updateProfile(formData).subscribe((res) => {
-    //     this.admin = res;
-    //   })
-    // })
+    dialogRef.afterClosed().subscribe(updated => {
+      if (updated) {
+        this.updateProfile(updated);
+      }
+    });
+  }
+
+  updateProfile(updated: any) {
+    this.user.updateProfile(updated).subscribe({
+      next: (res: any) => {
+        this.admin = res.user;
+        console.log("Profile updated:", this.admin);
+      },
+      error: (err) => {
+        console.error("Profile update failed", err);
+      }
+    });
   }
 
   onFileSelected(event: any) {
@@ -68,7 +79,7 @@ export class Profile {
 
     this.user.uploadProfilePic(formData).subscribe({
       next: (res: any) => {
-        this.admin.profilePic = res.profilePic; // ✅ use res.profilePic
+        this.admin.profilePic = res.profilePic;
         console.log('Updated teacher:', this.admin);
       },
       error: (err) => {

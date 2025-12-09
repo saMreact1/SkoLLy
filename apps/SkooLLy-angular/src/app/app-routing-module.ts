@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'auth', component: Auth },
   { path: 'forgot-password', component: ForgotPassword },
   { path: 'reset-password/:token', component: ResetPassword },
-  { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule) }
+  { path: 'admin', loadChildren: () => import('./admin/admin-module').then(m => m.AdminModule) },
+  { path: 'teacher', loadChildren: () => import('./teacher/teacher-module').then(m => m.TeacherModule) }
 ];
 
 @NgModule({

@@ -21,7 +21,7 @@
       <p class="admin-id">ID: {{ admin.staffId }}</p>
     </div>
 
-    <button mat-raised-button class="edit-btn" routerLink="/admin/settings">
+    <button mat-raised-button class="edit-btn" (click)="editProfile()">
       <mat-icon>edit</mat-icon>
       Edit Profile
     </button>

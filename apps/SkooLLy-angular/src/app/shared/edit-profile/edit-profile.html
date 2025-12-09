@@ -1,1 +1,61 @@
-<p>edit-profile works!</p>
+<div class="container">
+    <h2 mat-dialog-title class="dialog-title">Edit Profile</h2>
+
+    <div mat-dialog-content class="dialog-content">
+
+    <div class="avatar-section">
+        <div class="avatar-wrapper">
+        <img [src]="preview || data.profilePic || 'assets/images/profile_picture.png'" />
+        <label for="editPic" class="upload-btn">
+            <mat-icon>camera_alt</mat-icon>
+        </label>
+        <input type="file" id="editPic" (change)="onFileChange($event)" hidden />
+        </div>
+        <p class="avatar-text">Update Profile Photo</p>
+    </div>
+
+    <form [formGroup]="editForm" class="form-grid">
+
+        <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="fullName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+        <mat-label>Phone</mat-label>
+        <input matInput formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+            <mat-option value="Male">Male</mat-option>
+            <mat-option value="Female">Female</mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+        <mat-label>Address</mat-label>
+        <textarea matInput rows="2" formControlName="address"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full">
+        <mat-label>Bio</mat-label>
+        <textarea matInput rows="3" formControlName="bio"></textarea>
+        </mat-form-field>
+
+    </form>
+    </div>
+
+    <div mat-dialog-actions class="dialog-actions">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="editForm.invalid">
+        Save Changes
+    </button>
+    </div>
+</div>
