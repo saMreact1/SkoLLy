@@ -19,5 +19,8 @@
   "description": "",
   "devDependencies": {
     "turbo": "^2.6.1"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
   }
 }
