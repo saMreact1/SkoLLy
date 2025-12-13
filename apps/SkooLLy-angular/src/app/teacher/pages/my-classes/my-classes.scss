@@ -1,0 +1,63 @@
+.title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+}
+
+.class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.class-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--card-bg);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease,
+    box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .class-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        h3 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .student-count {
+            background: var(--primary-text);
+            color: #fff;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+    }
+
+    .subjects {
+        margin-bottom: 1.2rem;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        button mat-icon {
+            margin-right: 6px;
+        }
+    }
+}

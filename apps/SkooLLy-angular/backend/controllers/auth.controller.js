@@ -12,8 +12,6 @@ const generateDefaultClasses = require('../utils/generateClasses')
 const { generateDefaultSubjects } = require('../utils/generateSubjects');
 const Subject = require('../models/subject.model');
 
-// 
-
 
 exports.register = async (req, res) => {
   const session = await mongoose.startSession();
@@ -34,6 +32,15 @@ exports.register = async (req, res) => {
     const personalInfo = JSON.parse(rawPersonalInfo);
 
     console.log("REQ.BODY:", req.body);
+
+    // const logoFilename = req.files && req.files['logo'] ? req.files['logo'][0].filename : null;
+    const profilePicFilename = req.files?.profilePic
+      ? `/uploads/profilePics/${req.files.profilePic[0].filename}`
+      : null;
+
+    const logoFilename = req.files?.logo
+      ? `/uploads/logos/${req.files.logo[0].filename}`
+      : null;
 
     // ✅ Normalize school name
     const normalizedSchoolName = schoolName.toLowerCase().trim();
@@ -57,8 +64,6 @@ exports.register = async (req, res) => {
         return res.status(400).json({ message: 'School already exists' });
       }
 
-      const logoFilename = req.file ? req.file.filename : null;
-
       school = await School.create([{
         name: normalizedSchoolName,
         email: schoolInfo.schoolEmail,
@@ -69,7 +74,7 @@ exports.register = async (req, res) => {
         state: schoolInfo.state
       }], { session });
 
-      school = school[0]; // create() returns an array with a session
+      school = school[0];
 
       await generateDefaultClasses(schoolInfo.schoolType, school._id, session);
 
@@ -102,8 +107,9 @@ exports.register = async (req, res) => {
     const user = new User({
       ...personalInfo,
       password: hashedPassword,
-      tenantId: school._id
-    });
+      tenantId: school._id,
+      profilePic: profilePicFilename
+    })
 
     await user.save({ session });
 

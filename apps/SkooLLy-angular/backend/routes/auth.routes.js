@@ -5,7 +5,7 @@ const { register, login, checkSchoolAndEmail, forgotPassword, resetPassword, ver
 const upload = require('../config/multer');
 
 router.get("/user", authMiddleware, getUserProfile);
-router.post('/register', upload.single('logo'), register);
+router.post('/register', upload.fields([{ name: 'logo', maxCount: 1 }, { name: 'profilePic', maxCount: 1 }]), register);
 router.post('/login', login);
 router.post('/check', checkSchoolAndEmail);
 router.post('/forgot-password', forgotPassword);

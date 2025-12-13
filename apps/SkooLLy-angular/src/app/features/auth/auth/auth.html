@@ -121,8 +121,6 @@
             <!-- Step 3: Personal Info -->
             <mat-step [stepControl]="personalInfoForm" class="mat-step">
                 <form [formGroup]="personalInfoForm" (submit)="onRegister()">
-                    <!-- <ng-template matStepLabel>Personal Info</ng-template> -->
-                    
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Full Name</mat-label>
                         <input matInput formControlName="fullName">
@@ -183,6 +181,11 @@
                             accept="image/*"
                         />
                     </div>
+
+                    <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Address</mat-label>
+                        <input type="text" matInput formControlName="address">
+                    </mat-form-field>
 
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>Password</mat-label>

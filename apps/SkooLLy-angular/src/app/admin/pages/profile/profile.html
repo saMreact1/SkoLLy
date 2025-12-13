@@ -6,7 +6,7 @@
   <div class="profile-header">
     <div class="profile-picture">
       <img
-        [src]="admin.profilePic || '../../../../assets/images/profile_picture.png'"
+        [src]="admin.profilePic ? backendUrl + admin.profilePic : '../../../../assets/images/profile_picture.png'"
         alt="Profile Picture" 
         class="avatar" 
         width="150"

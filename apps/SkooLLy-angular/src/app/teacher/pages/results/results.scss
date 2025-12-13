@@ -1,0 +1,51 @@
+.results-card {
+  padding: 2rem;
+  border-radius: 1rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    mat-form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+  }
+
+  .results-table-container {
+    overflow-x: auto;
+
+    table {
+      width: 100%;
+      min-width: 800px;
+
+      th, td {
+        text-align: center;
+        padding: 1rem;
+      }
+
+      input {
+        width: 80px;
+        padding: 0.3rem;
+        text-align: center;
+      }
+    }
+
+    .actions {
+      text-align: right;
+      margin-top: 1rem;
+    }
+
+    .confirmation {
+      color: green;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+  }
+}

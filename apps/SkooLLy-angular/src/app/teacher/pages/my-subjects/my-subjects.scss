@@ -1,0 +1,50 @@
+mat-card {
+    padding: 1.5rem;
+}
+
+.subject-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.subject-card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.4s ease,
+    box-shadow 0.2s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .subject-info {
+        margin-bottom: 1rem;
+
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            margin: 0.25rem 0;
+            color: #555;
+        }
+    }
+
+    .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+        button mat-icon {
+            margin-right: 4px;
+        }
+    }
+}

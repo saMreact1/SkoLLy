@@ -1,0 +1,32 @@
+.resources-card {
+  padding: 2rem;
+  border-radius: 1rem;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  .upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    mat-form-field {
+      flex: 1 1 300px;
+    }
+
+    input[type='file'] {
+      margin-top: 1rem;
+    }
+  }
+
+  table {
+    margin-top: 2rem;
+    width: 100%;
+    min-width: 600px;
+  }
+
+  .my-4 {
+    margin: 2rem 0;
+  }
+}

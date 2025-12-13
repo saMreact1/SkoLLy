@@ -92,7 +92,8 @@ export class Auth implements OnInit {
       confirmPassword: ['', Validators.required],
       classId: [''],
       dob: ['', Validators.required],
-      profilePic: ['']
+      profilePic: [''],
+      address: ['', Validators.required]
     }, { validators: this.matchPasswords('password', 'confirmPassword') });
 
     this.personalInfoForm.get('role')?.valueChanges.subscribe(role => {
@@ -239,8 +240,13 @@ export class Auth implements OnInit {
       confirmPassword: this.personalInfoForm.value.confirmPassword,
       classId: this.personalInfoForm.value.classId,
       dob: this.personalInfoForm.value.dob,
-      profilePic: this.personalInfoForm.value.profilePic
+      profilePic: this.personalInfoForm.value.profilePic,
+      address: this.personalInfoForm.value.address
     }));
+
+    if (this.selectedProfilePicFile) {
+      formData.append('profilePic', this.selectedProfilePicFile);
+    }
 
     this.auth.register(formData).subscribe({
       next: () => {
@@ -285,8 +291,9 @@ export class Auth implements OnInit {
 
   onPicSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
+    
     if (input.files && input.files.length > 0) {
-      this.selectedLogoFile = input.files[0];
+      this.selectedProfilePicFile = input.files[0];
 
       this.personalInfoForm.get('profilePic')?.setValue(this.selectedProfilePicFile)
     }

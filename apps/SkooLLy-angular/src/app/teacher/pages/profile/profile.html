@@ -1,0 +1,61 @@
+<div class="profile-container" *ngIf="teacher">
+  <!-- Banner -->
+  <div class="profile-banner"></div>
+
+  <!-- Avatar and Main Info -->
+  <div class="profile-header">
+    <div class="profile-picture">
+      <img
+        [src]="teacher.profilePic ? backendUrl + teacher.profilePic : '../../../../assets/images/profile_picture.png'"
+        alt="Profile Picture" 
+        class="avatar" 
+        width="150"
+      >
+      <label for="fileInput" class="upload-label"><mat-icon>camera_alt</mat-icon></label>
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" hidden />
+    </div>
+
+    <div class="profile-details">
+      <h2>{{ teacher.fullName }}</h2>
+      <p class="admin-role">ADMIN</p>
+      <p class="admin-id">ID: {{ teacher.staffId }}</p>
+    </div>
+
+    <button mat-raised-button class="edit-btn" (click)="editProfile()">
+      <mat-icon>edit</mat-icon>
+      Edit Profile
+    </button>
+  </div>
+
+  <!-- Info Grid -->
+  <div class="info-grid">
+    <div class="info-item">
+      <span>Email</span>
+      <p>{{ teacher.email }}</p>
+    </div>
+    <div class="info-item">
+      <span>Phone</span>
+      <p>{{ teacher.phone }}</p>
+    </div>
+    <div class="info-item">
+      <span>Gender</span>
+      <p>{{ teacher.gender }}</p>
+    </div>
+    <div class="info-item">
+      <span>Class</span>
+      <p>{{ teacher.assignedClass }}</p>
+    </div>
+    <div class="info-item">
+      <span>Bio</span>
+      <p>{{ teacher.bio || 'Tell us about yourself...' }}</p>
+    </div>
+    <div class="info-item">
+      <span>Address</span>
+      <p>{{ teacher.address }}</p>
+    </div>
+    <div class="info-item">
+      <span>Joined</span>
+      <p>{{ teacher.createdAt | date:'mediumDate' }}</p>
+    </div>
+  </div>
+</div>

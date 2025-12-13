@@ -1,0 +1,28 @@
+<h2 class="title">📚 My Classes</h2>
+
+<div class="class-grid">
+    <mat-card *ngFor="let cls of classes" class="class-card">
+        <div class="class-header">
+            <h3>{{ cls.name }}</h3>
+            <span class="student-count">{{ cls.students }} Students</span>
+        </div>
+
+        <p class="subjects">
+            <strong>Subjects:</strong> {{ cls.subjects.join(', ') }}
+        </p>
+
+        <div class="actions">
+            <button mat-stroked-button color="primary" (click)="openStudents(cls)">
+                <mat-icon>groups</mat-icon> View Students
+            </button>
+
+            <button mat-stroked-button color="accent">
+                <mat-icon>calendar_month</mat-icon> View Timetable
+            </button>
+
+            <button mat-stroked-button color="warn">
+                <mat-icon>upload_file</mat-icon> Upload Results
+            </button>
+        </div>
+    </mat-card>
+</div>

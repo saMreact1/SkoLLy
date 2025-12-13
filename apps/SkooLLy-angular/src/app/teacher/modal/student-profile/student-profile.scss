@@ -1,0 +1,37 @@
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    align-self: center;
+  }
+
+  .info {
+    font-size: 0.95rem;
+
+    p {
+      margin: 0.25rem 0;
+    }
+  }
+
+  .grades {
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th, td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+      }
+
+      th {
+        background: #f0f0f0;
+      }
+    }
+  }
+}

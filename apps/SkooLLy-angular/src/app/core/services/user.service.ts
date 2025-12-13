@@ -65,6 +65,10 @@ export class UserService {
         );
     }
 
+    setUser(user: any) {
+        this.userSubject.next(user);
+    }
+
     get userValue() {
         return this.userSubject.value;
     }

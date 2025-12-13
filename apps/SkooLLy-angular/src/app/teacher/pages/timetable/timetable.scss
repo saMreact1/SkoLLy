@@ -1,0 +1,92 @@
+.timetable-card {
+    padding: 2rem;
+
+    .timetable-header {
+        // display: flex;
+        // justify-content: space-between;
+        // align-items: center;
+        margin-bottom: 1.5rem;
+        
+        button {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border-color: #ff06a49d;
+            transition: background-color 0.3s;
+        }
+    }
+
+    .timetable-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .timetable-table {
+        width: 100%;
+        font-size: 0.95rem;
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ccc;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .day-cell {
+            font-weight: 600;
+            background-color: #fafafa;
+        }
+        .editable {
+            position: relative;
+
+            input {
+                width: 100%;
+                padding: 6px 8px;
+                font-size: 0.95rem;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                outline: none;
+            }
+
+            .editableText {
+                cursor: pointer;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 4px;
+
+                &:hover {
+                background: #f0f9ff;
+                }
+            }
+
+            .edit-icon {
+                font-size: 16px;
+                color: #2196f3;
+            }
+        }
+    }
+
+    .hidden-export-version {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        // visibility: hidden;
+    }
+}
+
+@media (max-width: 768px) {
+  .timetable-table {
+    font-size: 0.85rem;
+
+    th,
+    td {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+}

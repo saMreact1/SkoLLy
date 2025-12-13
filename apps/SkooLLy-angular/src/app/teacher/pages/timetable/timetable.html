@@ -1,0 +1,67 @@
+<mat-card class="timetable-card">
+  <div class="timetable-header">
+    <h2>📘 My Teaching Timetable</h2>
+    <button mat-stroked-button color="accent" (click)="downloadPDF()">
+      <mat-icon>picture_as_pdf</mat-icon>
+      Download PDF
+    </button>
+  </div>
+
+  <!-- 🧩 Table content -->
+  <div #timetableTable class="timetable-table-wrapper">
+    <table class="timetable-table">
+      <thead>
+        <tr>
+          <th>Day / Period</th>
+          <th *ngFor="let period of periods">{{ period }}</th>
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr *ngFor="let day of days">
+          <td class="day-cell">{{ day }}</td>
+          <td class="cell editable" *ngFor="let period of periods">
+            <ng-container *ngIf="editingCell === day + '_' + period; else displayCell">
+            <input
+              [(ngModel)]="editedValue"
+              (keydown.enter)="saveCell(day, period)"
+              (blur)="saveCell(day, period)"
+              autofocus
+            />
+          </ng-container>
+
+          <ng-template #displayCell>
+            <span
+              [ngClass]="{ editableText: isAssigned(day, period) }"
+              (click)="editCell(day, period)"
+            >
+              {{ timetable[day + '_' + period] || '—' }}
+              <mat-icon *ngIf="isAssigned(day, period)" class="edit-icon">edit</mat-icon>
+            </span>
+          </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 🔒 Hidden Clone for PDF -->
+  <div #pdfTable class="timetable-table-wrapper hidden-export-version">
+    <table class="timetable-table">
+      <thead>
+        <tr>
+          <th>Day / Period</th>
+          <th *ngFor="let period of periods">{{ period }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let day of days">
+          <td class="day-cell">{{ day }}</td>
+          <td *ngFor="let period of periods">
+            {{ timetable[day + '_' + period] || '—' }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</mat-card>

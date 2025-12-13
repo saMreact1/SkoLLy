@@ -1,0 +1,28 @@
+<mat-card>
+  <h2>📘 My Subjects</h2>
+
+  <div class="subject-grid">
+    <mat-card class="subject-card" *ngFor="let subject of subjects">
+      <div class="subject-info">
+        <h3>{{ subject.name }}</h3>
+        <p>Class: {{ subject.class }}</p>
+        <p>Code: {{ subject.code }}</p>
+        <p>Total Students: {{ subject.totalStudents }}</p>
+      </div>
+
+      <div class="actions">
+        <button mat-stroked-button color="primary" (click)="viewStudents(subject)">
+          <mat-icon>group</mat-icon> View Students
+        </button>
+
+        <button mat-stroked-button color="accent" (click)="viewResources(subject)">
+          <mat-icon>folder</mat-icon> View Resources
+        </button>
+
+        <!-- <button mat-stroked-button color="warn" (click)="uploadResults(subject)">
+          <mat-icon>upload</mat-icon> Upload Results
+        </button> -->
+      </div>
+    </mat-card>
+  </div>
+</mat-card>

@@ -1,0 +1,47 @@
+.attendance-card {
+  padding: 2rem;
+  border-radius: 1rem;
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+
+    mat-form-field {
+      min-width: 200px;
+      flex: 1;
+    }
+  }
+
+  .student-list {
+    mat-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    //   padding: 1rem;
+      padding: 2rem 1rem 3rem;
+      margin: .5rem 0;
+      border-bottom: 1px solid #eee;
+
+      .student-name {
+        font-weight: 500;
+      }
+    }
+  }
+
+  .actions {
+    margin-top: 1.5rem;
+    text-align: right;
+  }
+
+  .confirmation {
+    margin-top: 1rem;
+    font-weight: 500;
+    color: green;
+  }
+}

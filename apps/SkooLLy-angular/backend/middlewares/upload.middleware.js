@@ -1,12 +1,25 @@
 const multer = require('multer');
 const path = require('path');
 
+const FILE_PATHS = {
+  logo: 'uploads/logos',
+  profilePic: 'uploads/profilePics'
+};
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/');
+    const uploadPath = FILE_PATHS[file.fieldname];
+
+    if (!uploadPath) {
+      return cb(new Error(`Unknown field: ${file.fieldname}`));
+    }
+
+    cb(null, uploadPath);
   },
+
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // unique name
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + ext);
   }
 });
 

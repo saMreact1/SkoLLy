@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>👩‍🎓 Students in {{ data.className }}</h2>
+<mat-dialog-content>
+    <div class="student-list">
+        <mat-card *ngFor="let student of data.students" class="student-card">
+            <img [src]="student.avatar || '../../../../../assets/images/profile_picture.png'" alt="Avatar" />
+            <div class="info">
+                <h4>{{ student.name }}</h4>
+                <p>ID: {{ student.id }}</p>
+            </div>
+            <button mat-raised-button color="primary" (click)="openStudentProfile(student)">
+                <mat-icon>visibility</mat-icon>
+                View Profile
+            </button>
+        </mat-card>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" (click)="close()">Close</button>
+</mat-dialog-actions>

@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>👤 {{ data.student.name }}</h2>
+<mat-dialog-content>
+  <div class="profile">
+    <img [src]="data.student.avatar || '../../../../../assets/images/profile_picture.png'" alt="Avatar" />
+
+    <div class="info">
+      <p><strong>ID:</strong> {{ data.student.id }}</p>
+      <p><strong>Email:</strong> {{ data.student.email || 'Not Available' }}</p>
+      <p><strong>Class:</strong> {{ data.student.class || '—' }}</p>
+    </div>
+
+    <div class="grades">
+      <h4>📊 Grades (Demo)</h4>
+      <table>
+        <tr>
+          <th>Subject</th>
+          <th>Score</th>
+        </tr>
+        <tr *ngFor="let result of data.student.grades || []">
+          <td>{{ result.subject }}</td>
+          <td>{{ result.score }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- <button mat-button color="primary" (click)="download()">Download Report</button> -->
+  <button mat-button mat-dialog-close (click)="close()">Close</button>
+</mat-dialog-actions>

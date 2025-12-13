@@ -10,7 +10,7 @@ import { UserService } from '../core/services/user.service';
   styleUrl: './admin.scss'
 })
 export class Admin implements OnInit {
-  backendUrl = 'http://localhost:5000/uploads/logos';
+  backendUrl = 'http://localhost:5000/';
 
   collapsed: boolean = false;
   admin: any;
@@ -27,6 +27,11 @@ export class Admin implements OnInit {
 
   ngOnInit(): void {
     this.collapsed = window.innerWidth <= 768;
+
+    this.user.user$.subscribe(user => {
+      this.admin = user;
+    });
+
     this.school.getProfile().subscribe({
       next: (profile) => {
         this.schoolName = profile.name;

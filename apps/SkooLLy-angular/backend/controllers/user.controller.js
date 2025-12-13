@@ -7,14 +7,13 @@ exports.uploadProfilePic = (req, res) => {
     return res.status(400).json({ message: 'No file uploaded' });
   }
 
-  // Save image path to user profile in DB
-  const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  const profilePicPath = `/uploads/profilePics/${req.file.filename}`;
 
-  User.findByIdAndUpdate(req.user.id, { profilePic: imageUrl }, { new: true })
+  User.findByIdAndUpdate(req.user.id, { profilePic: profilePicPath }, { new: true })
   .then(user => {
     res.json({
       message: 'Profile picture updated successfully ✅',
-      profilePic: user.profilePic  // ✅ return explicitly
+      profilePic: user.profilePic
     });
   })
   .catch(err => res.status(500).json({ message: 'Error uploading profile picture', error: err.message }));
@@ -29,92 +28,36 @@ exports.getUser = async (req, res) => {
   }
 };
 
-// exports.getUserById = async (req, res) => {
-//   try {
-//     const userId = req.params.id;
-    
-//     const user = await User.findById(userId).select('-password'); // don’t send password
-
-//     if (!user) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-
-//     res.json(user);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error', error: error.message });
-//   }
-// };
-
-// exports.updateProfile = async (req, res) => {
-//   const userId = req.user.id; // 🔧 use `id`, not `_id`
-//   const { fullName, email, password, bio, phone } = req.body;
-
-//   if (!userId) {
-//     return res.status(400).json({ message: 'Invalid user ID in token' });
-//   }
-
-//   try {
-//     const updateData = {
-//       ...(fullName && { fullName }),
-//       ...(email && { email }),
-//       ...(phone && { phone }),
-//       ...(phone && { phone }),
-//     };
-
-//     // Optional: If you want to allow password change, handle it here
-//     if (password && password.trim() !== "") {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       updateData.password = hashedPassword;
-//     }
-
-//     if (req.file) {
-//       req.body.profilePic = `/uploads/${req.file.filename}`;
-//     }
-
-//     const updatedUser = await User.findByIdAndUpdate(
-//       userId,
-//       { $set: updateData },
-//       { new: true, runValidators: true }
-//     );
-
-//     res.status(200).json({ user: updatedUser });
-//   } catch (error) {
-//     console.error(error); // Log actual error
-//     res.status(500).json({ message: 'Failed to update profile', error: error.message });
-//   }
-// };
-
 exports.updateProfile = async (req, res) => {
   const userId = req.user.id;
-
-  const { fullName, email, password, bio, phone } = req.body;
 
   if(!userId) {
     return res.status(400).json({ message: "Invalid user ID in token" });
   }
 
   try {
-    const updateData = {};
+    let updateData = {...req.body};
 
-    if(fullName) updateData.fullName = fullName.trim();
-    if(email) updateData.email = email.trim();
-    if(bio) updateData.bio = bio.trim();
-    if(phone) updateData.phone = phone.trim();
-
-    if(password && password.trim() !== "") {
-      updateData.password = await bcrypt.hash(password, 10);
+    if(updateData.password && updateData.password.trim() !== "") {
+      updateData.password = await bcrypt.hash(updateData.password, 10);
+    } else {
+      delete updateData.password;
     }
+
     if(req.file) {
-      updateData.profilePic = `/uploads/${req.file.filename}`;
+      updateData.profilePic = `/uploads/profilePics/${req.file.filename}`;
     }
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $set: updateData },
       {  new: true, runValidators: true }
     );
+
     if(!updatedUser) {
       return res.status(404).json({message: "User not found"})
     }
+    
     res.status(200).json({
       user: updatedUser
     });

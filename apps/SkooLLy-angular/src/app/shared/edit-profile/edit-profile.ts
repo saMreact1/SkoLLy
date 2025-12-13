@@ -22,6 +22,8 @@ import { MatSelectModule } from '@angular/material/select';
   styleUrl: './edit-profile.scss',
 })
 export class EditProfile {
+  backendUrl = 'http://localhost:5000';
+
   editForm: FormGroup;
   preview: string | null = null;
 
@@ -40,6 +42,10 @@ export class EditProfile {
     });
   }
 
+  get profilePicUrl() {
+    return this.preview || (this.data.profilePic ? this.backendUrl + this.data.profilePic : 'assets/images/profile_picture.png');
+  }
+
   onFileChange(ev: any) {
     const file = ev.target.files[0];
     if (!file) return;
@@ -50,10 +56,19 @@ export class EditProfile {
   }
 
   save() {
-    const result = {
-      ...this.editForm.value,
-      profilePic: this.preview || this.data.profilePic
-    };
-    this.dialogRef.close(result);
+    const formValues = this.editForm.value;
+
+    const fileInput = (document.getElementById('editPic') as HTMLInputElement).files?.[0];
+    let payload: any;
+
+    if(fileInput) {
+      payload = new FormData();
+      Object.keys(formValues).forEach(key => payload.append(key, formValues[key]));
+      payload.append('profilePic', fileInput);
+    } else {
+      payload = formValues;
+    }
+
+    this.dialogRef.close(payload);
   }
 }

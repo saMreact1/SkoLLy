@@ -40,9 +40,6 @@ export class Profile {
         this.loading = false;
       }
     });
-
-    console.log(this.admin);
-    
   }
 
   editProfile() {
@@ -52,6 +49,8 @@ export class Profile {
       panelClass: 'custom-dialog-container',
       data: this.admin
     });
+
+    console.log(this.admin);
 
     dialogRef.afterClosed().subscribe(updated => {
       if (updated) {
@@ -64,6 +63,7 @@ export class Profile {
     this.user.updateProfile(updated).subscribe({
       next: (res: any) => {
         this.admin = res.user;
+        this.user.setUser(this.admin);
         console.log("Profile updated:", this.admin);
       },
       error: (err) => {
@@ -80,7 +80,8 @@ export class Profile {
     this.user.uploadProfilePic(formData).subscribe({
       next: (res: any) => {
         this.admin.profilePic = res.profilePic;
-        console.log('Updated teacher:', this.admin);
+        this.user.setUser(this.admin);
+        console.log('Updated admin:', this.admin);
       },
       error: (err) => {
         console.error('Upload failed', err);

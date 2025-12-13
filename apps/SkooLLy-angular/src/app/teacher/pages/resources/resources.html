@@ -1,0 +1,69 @@
+<mat-card class="resources-card">
+  <h2>📚 Upload Class Resources</h2>
+
+  <form [formGroup]="resourceForm" (ngSubmit)="uploadResource()" class="upload-form">
+    <mat-form-field appearance="fill">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="class">
+        <mat-option *ngFor="let cls of classes" [value]="cls">{{ cls }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Subject</mat-label>
+      <mat-select formControlName="subject">
+        <mat-option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
+
+    <input type="file" (change)="onFileChange($event)" />
+    <button mat-raised-button color="primary" type="submit">Upload</button>
+  </form>
+
+  <mat-divider class="my-4"></mat-divider>
+
+  <h3>📂 Uploaded Resources</h3>
+  <mat-table [dataSource]="resources" class="mat-elevation-z2">
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title </th>
+      <td mat-cell *matCellDef="let res"> {{ res.title }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="class">
+      <th mat-header-cell *matHeaderCellDef> Class </th>
+      <td mat-cell *matCellDef="let res"> {{ res.class }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="subject">
+      <th mat-header-cell *matHeaderCellDef> Subject </th>
+      <td mat-cell *matCellDef="let res"> {{ res.subject }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="uploadedAt">
+      <th mat-header-cell *matHeaderCellDef> Uploaded </th>
+      <td mat-cell *matCellDef="let res"> {{ res.uploadedAt }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let res">
+        <button mat-icon-button color="accent" (click)="download(res.file)">
+          <mat-icon>cloud_download</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['title', 'class', 'subject', 'uploadedAt', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['title', 'class', 'subject', 'uploadedAt', 'actions'];"></tr>
+  </mat-table>
+</mat-card>
