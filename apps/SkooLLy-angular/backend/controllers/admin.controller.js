@@ -135,24 +135,29 @@ exports.closeSession = async (req, res) => {
     if (!sessionExists)
       return res.status(400).json({ message: "Session ID does not exist" });
     if (sessionExists.schoolId.toString() !== tenantId)
-      return res
-        .status(401)
-        .json({
-          message:
-            "Unauthorized - You can't close this session as it is doesn't belong to your school",
-        });
+      return res.status(401).json({
+        message:
+          "Unauthorized - You can't close this session as it is doesn't belong to your school",
+      });
 
-    if (sessionExists.isActive === false) return res.status(400).json({  message: `${sessionExists.sessionName} session is already closed`, session: sessionExists,});
+    if (sessionExists.isActive === false)
+      return res.status(400).json({
+        message: `${sessionExists.sessionName} session is already closed`,
+        session: sessionExists,
+      });
+    // deactivate all terms
+    await Term.updateMany(
+      { _id: { $in: sessionExists.terms } },
+      { isActive: false }
+    );
 
     sessionExists.isActive = false;
     await sessionExists.save();
 
-    res
-      .status(200)
-      .json({
-        message: `${sessionExists.sessionName} session closed successfully 🎉🎉.`,
-        session: sessionExists,
-      });
+    res.status(200).json({
+      message: `${sessionExists.sessionName} session closed successfully 🎉🎉.`,
+      session: sessionExists,
+    });
   } catch (error) {
     console.log("An error occured in the close session controller: ", error);
     return res.status(500).json({ message: "Internal Server Error" });
@@ -173,11 +178,9 @@ exports.createSession = async (req, res) => {
       isActive: true,
     });
     if (sessionExists)
-      return res
-        .status(400)
-        .json({
-          message: `${sessionExists.sessionName} session is on, so you cannot create a new session`,
-        });
+      return res.status(400).json({
+        message: `${sessionExists.sessionName} session is on, so you cannot create a new session`,
+      });
     // if no session is active
     const currentYear = new Date().getFullYear();
     const startYear = currentYear;
@@ -186,7 +189,7 @@ exports.createSession = async (req, res) => {
     const schoolName = school.name;
     const schoolId = tenantId;
     const isActive = true;
-        
+
     // checking for duplicate names
     const duplicateSessionName = await Session.findOne({
       schoolId,
@@ -194,7 +197,11 @@ exports.createSession = async (req, res) => {
       sessionName,
     });
 
-    if (duplicateSessionName) return res.status(400).json({ message: "You can't create a new session at the moment. You may have to wait till next year 😔" });
+    if (duplicateSessionName)
+      return res.status(400).json({
+        message:
+          "You can't create a new session at the moment. You may have to wait till next year 😔",
+      });
 
     const newSession = await Session.create({
       schoolName,
@@ -268,14 +275,20 @@ exports.createTerm = async (req, res) => {
         .status(400)
         .json({ message: `${name.toUpperCase()} Term already exists` });
 
-    if (allTerms.length === 3)
-      return res
-        .status(400)
-        .json({
-          message: "Error - You cannot create another term after third term",
-        });
+  
+    if (sessionExists.terms.length >= 3)
+      return res.status(400).json({
+        message: "Error - You cannot create another term after third term",
+      });
 
     // if term doesn't exists, create one
+    // turn other terms inactive
+    await Term.updateMany(
+      { _id: { $in: sessionExists.terms } },
+      { isActive: false }
+    );
+
+  
     const newTerm = await Term.create({
       name: name.toUpperCase(),
       startDate: new Date(`${startDate}T00:00:00Z`),
@@ -286,6 +299,7 @@ exports.createTerm = async (req, res) => {
     // save the term to the current session
     sessionExists.terms.push(newTerm._id);
     await sessionExists.save();
+    await allTerms.save();
 
     return res.status(201).json({
       message: "New Term Created",
@@ -294,6 +308,62 @@ exports.createTerm = async (req, res) => {
     });
   } catch (error) {
     console.log("An error occured in the create term controller: ", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.getCurrentSession = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const currentSession = await Session.findOne({
+      schoolId: tenantId,
+      isActive: true,
+    });
+    if (!currentSession)
+      return res
+        .status(404)
+        .json({ message: "No session is on for your school at the moment" });
+    return res.status(200).json({
+      session: currentSession.sessionName,
+      startYear: currentSession.startYear,
+      endYear: currentSession.endYear,
+    });
+  } catch (error) {
+    console.log(
+      "An error occured in the get current session controller: ",
+      error
+    );
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.getCurrentTerm = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const currentSession = await Session.findOne({ schoolId: tenantId, isActive: true });
+    if (!currentSession)
+      return res
+        .status(404)
+        .json({ message: "No session is on for your school at the moment" });
+    const currentTerm = await Term.findOne({
+      session: currentSession._id,
+      isActive: true,
+    });
+    if (!currentTerm)
+      return res
+        .status(404)
+        .json({ message: "No term is on for your school at the moment" });
+    return res.status(200).json({
+      term: currentTerm.name,
+      startDate: currentTerm.startDate,
+      endDate: currentTerm.endDate,
+      session: currentSession.sessionName,
+    });
+  } catch (error) {
+    console.log(
+      "An error occured in the get current session controller: ",
+      error
+    );
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
