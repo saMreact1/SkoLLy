@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getOverview, getStudentsByClass, getGenderDistribution, getWeeklyAttendance, createTerm, createSession, closeSession } = require('../controllers/admin.controller');
+const { getOverview, getStudentsByClass, getGenderDistribution, getWeeklyAttendance, createTerm, createSession, closeSession, getCurrentSession, getCurrentTerm } = require('../controllers/admin.controller');
 const { adminMiddleware } = require('../middlewares/admin.middleware');
 const { authMiddleware } = require('../middlewares/auth.middleware')
 
@@ -12,6 +12,8 @@ router.get('/weekly-attendance', authMiddleware, getWeeklyAttendance);
 router.post('/create-session', authMiddleware, adminMiddleware, createSession);
 router.post('/create-term', authMiddleware, adminMiddleware, createTerm)
 router.post('/close-session', authMiddleware, adminMiddleware, closeSession);
+router.get("/current-session", authMiddleware, getCurrentSession)
+router.get("/current-term", authMiddleware, getCurrentTerm);
 
 
 module.exports = router;
