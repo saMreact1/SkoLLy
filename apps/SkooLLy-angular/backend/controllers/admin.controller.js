@@ -152,7 +152,6 @@ exports.closeSession = async (req, res) => {
     );
 
     sessionExists.isActive = false;
-    console.log(sessionExists);
     await sessionExists.save();
 
     res.status(200).json({
