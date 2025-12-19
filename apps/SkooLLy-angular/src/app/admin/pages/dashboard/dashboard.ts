@@ -132,7 +132,7 @@ export class Dashboard implements OnInit {
 
   openSessionSetup(): void {
     const dialogRef = this.dialog.open(SessionTerm, {
-      maxWidth: '95vw',
+      maxWidth: '85vw',
       maxHeight: '90vh',
       disableClose: !this.hasActiveSession, // Force completion if no session
       panelClass: 'session-setup-dialog'

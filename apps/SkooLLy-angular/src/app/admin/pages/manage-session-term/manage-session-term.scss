@@ -1,0 +1,348 @@
+.management-container {
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #f5f7fa;
+      min-height: 100vh;
+    }
+
+    .page-header {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .title-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #667eea;
+    }
+
+    .page-header h1 {
+      margin: 0 0 4px 0;
+      color: #333;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .loading-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      gap: 16px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h2 {
+        margin: 0;
+        color: #333;
+        font-size: 20px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        mat-icon {
+          color: #667eea;
+        }
+      }
+    }
+
+    .current-session-section {
+      margin-bottom: 32px;
+    }
+
+    .session-card {
+      margin-bottom: 16px;
+
+      &.active-session {
+        border: 2px solid #4caf50;
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+      }
+
+      &.inactive {
+        opacity: 0.7;
+      }
+    }
+
+    .session-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+    }
+
+    .active-badge, .status-badge {
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .active-badge {
+      background: #4caf50;
+      color: white;
+    }
+
+    .status-badge {
+      background: #e0e0e0;
+      color: #666;
+
+      &.active {
+        background: #4caf50;
+        color: white;
+      }
+    }
+
+    .terms-section {
+      margin-top: 24px;
+    }
+
+    .terms-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+
+      h3 {
+        margin: 0;
+        color: #555;
+        font-size: 18px;
+      }
+    }
+
+    .terms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .term-card {
+      padding: 16px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 2px solid #e0e0e0;
+      transition: all 0.3s;
+
+      &:hover {
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+      }
+
+      &.active-term {
+        background: #e8f5e9;
+        border-color: #4caf50;
+      }
+    }
+
+    .term-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .term-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 16px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        color: #667eea;
+      }
+    }
+
+    .term-dates {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .date-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+
+      mat-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        color: #999;
+      }
+    }
+
+    .no-terms {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+
+      mat-icon {
+        font-size: 64px;
+        width: 64px;
+        height: 64px;
+        color: #ccc;
+        margin-bottom: 16px;
+      }
+
+      p {
+        margin: 0 0 16px 0;
+        font-size: 16px;
+      }
+    }
+
+    .sessions-history {
+      margin-top: 32px;
+    }
+
+    .sessions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .session-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #666;
+      font-size: 14px;
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        color: #999;
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+
+      mat-icon {
+        font-size: 96px;
+        width: 96px;
+        height: 96px;
+        color: #ccc;
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        margin: 0 0 8px 0;
+        color: #333;
+        font-size: 24px;
+      }
+
+      p {
+        margin: 0 0 24px 0;
+        color: #666;
+        font-size: 16px;
+      }
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px;
+
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        color: #667eea;
+      }
+
+      .stat-content {
+        h3 {
+          margin: 0 0 4px 0;
+          font-size: 28px;
+          color: #333;
+          font-weight: 600;
+        }
+
+        p {
+          margin: 0;
+          color: #666;
+          font-size: 14px;
+        }
+      }
+    }
+
+    mat-card-actions {
+      padding: 16px;
+      display: flex;
+      gap: 8px;
+    }
+
+@media (max-width: 768px) {
+    .management-container {
+        padding: 16px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .terms-grid, .sessions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-stats {
+        grid-template-columns: 1fr;
+    }
+}

@@ -50,6 +50,53 @@ exports.getSessionsWithTerms = async (req, res) => {
   }
 };
 
+exports.getCurrentSessionWithTerms = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    
+    const currentSession = await Session.findOne({
+      schoolId: tenantId,
+      isActive: true,
+    }).populate('terms');
+
+    if (!currentSession) {
+      return res.status(404).json({ 
+        message: "No session is on for your school at the moment" 
+      });
+    }
+
+    return res.status(200).json(currentSession);
+  } catch (error) {
+    console.log("An error occurred in getCurrentSessionWithTerms: ", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+exports.getSessionById = async (req, res) => {
+  try {
+    const { tenantId } = req.user;
+    const { sessionId } = req.params;
+
+    if (!isValidObjectId(sessionId)) {
+      return res.status(400).json({ message: "Invalid session ID" });
+    }
+
+    const session = await Session.findOne({
+      _id: sessionId,
+      schoolId: tenantId
+    }).populate('terms');
+
+    if (!session) {
+      return res.status(404).json({ message: "Session not found" });
+    }
+
+    return res.status(200).json(session);
+  } catch (error) {
+    console.log("An error occurred in getSessionById: ", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 exports.closeSession = async (req, res) => {
   try {
     const { tenantId } = req.user;

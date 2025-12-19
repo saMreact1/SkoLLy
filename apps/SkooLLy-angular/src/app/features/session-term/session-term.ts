@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatStepperModule } from '@angular/material/stepper';
+import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { SessionService } from '../../core/services/session.service';
 import { MatSelectModule } from '@angular/material/select';
 
@@ -38,6 +38,8 @@ export class SessionTerm {
   termCreated = false;
   isCreatingSession = false;
   isCreatingTerm = false;
+
+  @ViewChild('stepper') stepper!: MatStepper;
 
   constructor(
     private fb: FormBuilder,
@@ -69,6 +71,11 @@ export class SessionTerm {
           panelClass: ['white-bg-snack']
         });
         this.isCreatingSession = false;
+        this.sessionCreated = true;
+
+        setTimeout(() => {
+          this.stepper.next();
+        }, 300);
       },
       error: (err) => {
         const errorMessage = err.error?.message || 'Failed to create session';
@@ -102,6 +109,11 @@ export class SessionTerm {
           panelClass: ['white-bg-snack']
         });
         this.isCreatingTerm = false;
+        this.termCreated = true;
+
+        setTimeout(() => {
+          this.stepper.next();
+        }, 300);
       },
       error: (err) => {
         const errorMessage = err.error?.message || 'Failed to create term';

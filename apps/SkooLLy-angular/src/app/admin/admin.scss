@@ -95,6 +95,10 @@
             scrollbar-width: none;
             position: relative;
 
+            @media (max-width: 1024px) {
+                max-height: 77vh;
+            }
+
             &.hover {
                 scrollbar-width: 2px;
             }
@@ -112,6 +116,7 @@
                     position: fixed;
                     bottom: .4rem;
                     border-top: 1px solid #ddd;
+                    z-index: 1;
                 }
 
                 mat-icon {

@@ -16,6 +16,13 @@ h2[mat-dialog-title] {
     width: 32px;
     height: 32px;
   }
+
+  @media (max-width: 480px) {
+    mat-icon {
+      font-size: 30px;
+      width: 35px;
+    }
+  }
 }
 
 mat-dialog-content {
@@ -167,12 +174,25 @@ mat-dialog-content {
 }
 
 mat-dialog-actions {
-  padding: 16px 24px;
+  padding: 0px 24px;
   justify-content: center;
+
+  button {
+    padding: 0 1rem .5rem;
+  }
 }
 
-::ng-deep .mat-stepper-horizontal {
-  margin-top: 20px;
+.mat-horizontal-content-container {
+  padding: 0 24px 10px 24px;
+}
+
+::ng-deep .mat-horizontal-stepper-header-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+::ng-deep .mat-step-header {
+  flex: 0 0 auto;
 }
 
 @media (max-width: 600px) {

@@ -13,6 +13,7 @@ import { Results } from './pages/results/results';
 import { Invoices } from './pages/invoices/invoices';
 import { Transactions } from './pages/transactions/transactions';
 import { Profile } from './pages/profile/profile';
+import { ManageSessionTerm } from './pages/manage-session-term/manage-session-term';
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
       { path: 'payments', component: Invoices },
       { path: 'receipts', component: Transactions },
       { path: 'profile', component: Profile },
+      { path: 'session-term', component: ManageSessionTerm }
     ]
   }
 ];

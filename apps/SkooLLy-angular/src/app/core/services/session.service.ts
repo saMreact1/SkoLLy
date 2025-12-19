@@ -139,7 +139,8 @@ export interface Session {
   schoolName: string;
   schoolId: string;
   isActive: boolean;
-  terms: any[];
+  terms: Term[];
+  createdAt?: string;
 }
 
 export interface Term {
@@ -193,7 +194,7 @@ export class SessionService {
   constructor(private http: HttpClient) {}
 
   createSession(): Observable<SessionResponse> {
-    return this.http.post<SessionResponse>(this.sessionsUrl, {});
+    return this.http.post<SessionResponse>(`${this.sessionsUrl}/create-session`, {});
   }
 
   getCurrentSession(): Observable<CurrentSessionResponse> {
@@ -202,8 +203,8 @@ export class SessionService {
     );
   }
 
-  getAllSessions(): Observable<SessionsListResponse> {
-    return this.http.get<SessionsListResponse>(this.sessionsUrl);
+  getAllSessions(): Observable<Session[]> {
+    return this.http.get<Session[]>(this.sessionsUrl);
   }
 
   closeSession(sessionId: string): Observable<SessionResponse> {
@@ -226,6 +227,12 @@ export class SessionService {
   getTermsBySession(sessionId: string): Observable<TermsListResponse> {
     return this.http.get<TermsListResponse>(
       `${this.termsUrl}/${sessionId}`
+    );
+  }
+
+  getCurrentSessionWithTerms(): Observable<Session> {
+    return this.http.get<Session>(
+      `${this.sessionsUrl}/current-session-with-terms`
     );
   }
 

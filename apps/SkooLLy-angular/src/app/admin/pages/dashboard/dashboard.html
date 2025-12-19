@@ -15,7 +15,7 @@
     <div class="info-content">
         <h3>Current Session: {{ currentSession }}</h3>
         <p *ngIf="currentTerm">Current Term: {{ currentTerm }}</p>
-        <button mat-button (click)="openSessionSetup()">
+        <button mat-button routerLink="/admin/session-term">
             Manage Sessions & Terms
         </button>
     </div>
