@@ -9,6 +9,7 @@ import { Resources } from './pages/resources/resources';
 import { Attendance } from './pages/attendance/attendance';
 import { Timetable } from './pages/timetable/timetable';
 import { Results } from './pages/results/results';
+import { Assignment } from './pages/assignment/assignment';
 
 const routes: Routes = [
   {
@@ -19,7 +20,7 @@ const routes: Routes = [
         { path: '', component: Dashboard },
         { path: 'resources', component: Resources },
         { path: 'attendance', component: Attendance },
-        // { path: 'notices', component: Notices },
+        { path: 'assignment', component: Assignment },
         { path: 'classes', component: MyClasses },
         { path: 'timetable', component: Timetable },
         { path: 'subjects', component: MySubjects },

@@ -37,7 +37,8 @@ export class Teacher implements OnInit {
     this.school.getProfile().subscribe({
       next: (profile) => {
         this.schoolName = profile.name;
-        this.schoolLogo = `${this.backendUrl}/${profile.logo}`;
+        this.schoolLogo = `${this.backendUrl}${profile.logo}`;
+        console.log(this.schoolLogo);
       },
       error: (err) => {
         console.log('Failed to load profile', err);

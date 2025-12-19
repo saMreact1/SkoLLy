@@ -165,8 +165,8 @@ export class Timetable implements OnInit {
   }
 
   loadSubjects() {
-    this.subject.getSubjects().subscribe((res: Subject[]) => {
-      this.subjects = res.map(s => ({
+    this.subject.getSubjects().subscribe((res: any) => {
+      this.subjects = res.subjects.map((s: Subject) => ({
         ...s,
         color: this.getRandomColor()
       }));

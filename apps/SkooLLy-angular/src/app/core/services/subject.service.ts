@@ -6,7 +6,7 @@ import { Subject } from '../models/subject.model';
 
 @Injectable({ providedIn: 'root' })
 export class SubjectService {
-  private apiUrl = 'http://localhost:5000/subjects';
+  private apiUrl = 'http://localhost:5000/subjects'; 
 
   constructor(private http: HttpClient) {}
 

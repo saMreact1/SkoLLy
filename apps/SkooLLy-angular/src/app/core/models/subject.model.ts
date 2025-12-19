@@ -4,4 +4,4 @@ export interface Subject {
   class: string;
   teacher: string;
   color?: string;
-}
+} 

@@ -54,6 +54,10 @@ export class Auth implements OnInit {
   schoolExists: boolean = false;
   emailExists: boolean = false;
 
+  showSuccessModal: boolean = false;
+  isNewAdminSchool: boolean = false;
+  registeredUserEmail: string = '';
+
   constructor(
     private fb: FormBuilder,
     private snack: MatSnackBar,
@@ -63,28 +67,33 @@ export class Auth implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.initializeForms();
+    this.setupRoleChangeListener();
+  }
+
+  private initializeForms(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
-    })
+    });
 
     this.basicInfoForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      schoolName: ['', Validators.required]
+      schoolName: ['', [Validators.required, Validators.minLength(3)]]
     });
 
     this.schoolInfoForm = this.fb.group({
       schoolEmail: ['', [Validators.required, Validators.email]],
-      schoolPhone: ['', [Validators.required, Validators.pattern('^\\d{11}$')]],
-      address: ['', Validators.required],
-      schoolType: [[], Validators.required],
+      schoolPhone: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
+      address: ['', [Validators.required, Validators.minLength(10)]],
+      schoolType: [[], [Validators.required, Validators.minLength(1)]],
       state: ['', Validators.required],
       logo: ['', Validators.required]
     });
 
     this.personalInfoForm = this.fb.group({
-      fullName: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern('^\\d{11}$')]],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
+      phone: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]],
       gender: ['', Validators.required],
       bio: [''],
       role: ['', Validators.required],
@@ -95,13 +104,9 @@ export class Auth implements OnInit {
       profilePic: [''],
       address: ['', Validators.required]
     }, { validators: this.matchPasswords('password', 'confirmPassword') });
-
-    this.personalInfoForm.get('role')?.valueChanges.subscribe(role => {
-      this.fetchClassesForTenant();
-    });
   }
 
-  matchPasswords(controlName: string, matchingControlName: string): ValidatorFn {
+  private matchPasswords(controlName: string, matchingControlName: string): ValidatorFn {
     return (group: AbstractControl) => {
       const control = group.get(controlName);
       const match = group.get(matchingControlName);
@@ -109,37 +114,49 @@ export class Auth implements OnInit {
     };
   }
 
+  private setupRoleChangeListener(): void {
+    this.personalInfoForm.get('role')?.valueChanges.subscribe(role => {
+      const classIdControl = this.personalInfoForm.get('classId');
+      
+      if (role === 'student') {
+        classIdControl?.setValidators([Validators.required]);
+        this.fetchClassesForTenant();
+      } else {
+        classIdControl?.clearValidators();
+        classIdControl?.setValue('');
+      }
+      
+      classIdControl?.updateValueAndValidity();
+    });
+  }
 
   goToNextStep(): void {
+    if (this.basicInfoForm.invalid) return;
+
     const { email, schoolName } = this.basicInfoForm.value;
-    console.log('🟡 Sending to backend:', { email, schoolName });
 
     this.auth.checkSchoolAndEmail(email, schoolName).subscribe({
       next: (res: any) => {
         this.emailExists = res.emailExists;
         this.schoolExists = res.schoolExists;
 
-        if (this.schoolExists && res.school) {
-          this.tenantId = res.school.tenantId;
-          console.log('✅ Tenant ID received:', this.tenantId);
-
-          // Only fetch classes after tenantId is guaranteed to be set
-          if (this.personalInfoForm.get('role')?.value === 'student') {
-            this.fetchClassesForTenant();
-          }
-        }
-
         if (this.emailExists) {
-          this.snack.open('Email already exists', '', {
+          this.snack.open('Email already exists. Please login instead.', '', {
             duration: 3000,
             panelClass: ['white-bg-snack']
           });
-        } else {
-          this.step++;
+          return;
         }
+
+        if (this.schoolExists && res.school) {
+          this.tenantId = res.school.tenantId;
+          console.log('✅ School exists. Tenant ID:', this.tenantId);
+        }
+
+        this.step++;
       },
-      error: () => {
-        this.snack.open('Error checking email/school', '', {
+      error: (err) => {
+        this.snack.open(err.error?.message || 'Error checking email/school', '', {
           duration: 3000,
           panelClass: ['white-bg-snack']
         });
@@ -148,7 +165,10 @@ export class Auth implements OnInit {
   }
 
   fetchClassesForTenant(): void {
-    if (!this.tenantId || !this.schoolExists) return;
+    if (!this.tenantId || !this.schoolExists) {
+      console.warn('Cannot fetch classes: missing tenantId or school does not exist');
+      return;
+    }
 
     this.classService.getClassesByTenant(this.tenantId).subscribe({
       next: (classes) => {
@@ -165,6 +185,8 @@ export class Auth implements OnInit {
   }
 
   onLogin() {
+    if (this.loginForm.invalid) return;
+
     const { email, password } = this.loginForm.value;
 
     this.auth.login({ email, password }).subscribe({
@@ -176,17 +198,18 @@ export class Auth implements OnInit {
           duration: 3000,
           panelClass: ['white-bg-snack']
         });
-        const role = res.user.role;
 
-        this.router.navigate([`/${role}`]);
+        const { role } = res.user;
 
         if(role ==='student') {
-          window.location.href = 'http://localhost:5173?token=' + res.token;
+          window.location.href = `http://localhost:5173?token=${res.token}`;
           console.log('Navigating to student portal...');
         }
+        
+        this.router.navigate([`/${role}`]);
       },
-      error: () => {
-        this.snack.open('Invalid credentials', '', {
+      error: (err) => {
+        this.snack.open(err.error?.message || 'Invalid credentials', '', {
           duration: 3000,
           panelClass: ['white-bg-snack']
         });
@@ -197,8 +220,7 @@ export class Auth implements OnInit {
   onRegister() {
     if (this.personalInfoForm.invalid) return;
 
-    const role = this.personalInfoForm.value.role;
-    const classId = this.personalInfoForm.value.classId;
+    const { role, classId } = this.personalInfoForm.value;
 
     if (role === 'student' && !classId) {
       this.snack.open('Please select your class.', '', {
@@ -208,9 +230,47 @@ export class Auth implements OnInit {
       return;
     }
 
+    const formData = this.buildRegistrationFormData();
+
+    this.auth.register(formData).subscribe({
+      next: () => {
+        this.snack.open('Registered successfully!', '', {
+          duration: 3000,
+          panelClass: ['white-bg-snack']
+        });
+
+        this.registeredUserEmail = this.basicInfoForm.value.email;
+        this.isNewAdminSchool = role === 'admin' && !this.schoolExists;
+        this.showSuccessModal = true;
+
+        this.isLogin = true;
+        this.resetForms();
+      },
+      error: err => {
+        this.snack.open(err.error.message || 'Registration failed.', '', {
+          duration: 3000,
+          panelClass: ['white-bg-snack']
+        });
+      }
+    });
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    this.isNewAdminSchool = false;
+
+    if (this.registeredUserEmail) {
+      this.loginForm.patchValue({
+        email: this.registeredUserEmail
+      });
+    }
+    
+    this.registeredUserEmail = '';
+  }
+
+  private buildRegistrationFormData(): FormData {
     const formData = new FormData();
 
-    // Flatten all your form data
     formData.append('email', this.basicInfoForm.value.email);
     formData.append('schoolName', this.basicInfoForm.value.schoolName);
     formData.append('schoolExists', JSON.stringify(this.schoolExists));
@@ -226,44 +286,29 @@ export class Auth implements OnInit {
       }));
 
       if (this.selectedLogoFile) {
-        formData.append('logo', this.selectedLogoFile); // 👈 THE ACTUAL FILE
+        formData.append('logo', this.selectedLogoFile);
       }
     }
 
+    const personalInfo = this.personalInfoForm.value;
     formData.append('personalInfo', JSON.stringify({
-      fullName: this.personalInfoForm.value.fullName,
-      phone: this.personalInfoForm.value.phone,
-      gender: this.personalInfoForm.value.gender,
-      bio: this.personalInfoForm.value.bio,
-      role: this.personalInfoForm.value.role,
-      password: this.personalInfoForm.value.password,
-      confirmPassword: this.personalInfoForm.value.confirmPassword,
-      classId: this.personalInfoForm.value.classId,
-      dob: this.personalInfoForm.value.dob,
-      profilePic: this.personalInfoForm.value.profilePic,
-      address: this.personalInfoForm.value.address
+      fullName: personalInfo.fullName,
+      phone: personalInfo.phone,
+      gender: personalInfo.gender,
+      bio: personalInfo.bio,
+      role: personalInfo.role,
+      password: personalInfo.password,
+      confirmPassword: personalInfo.confirmPassword,
+      classId: personalInfo.classId,
+      dob: personalInfo.dob,
+      address: personalInfo.address
     }));
 
     if (this.selectedProfilePicFile) {
       formData.append('profilePic', this.selectedProfilePicFile);
     }
 
-    this.auth.register(formData).subscribe({
-      next: () => {
-        this.snack.open('Registered successfully!', '', {
-          duration: 3000,
-          panelClass: ['white-bg-snack']
-        });
-        this.isLogin = true;
-        this.resetForms();
-      },
-      error: err => {
-        this.snack.open(err.error.message || 'Registration failed.', '', {
-          duration: 3000,
-          panelClass: ['white-bg-snack']
-        });
-      }
-    });
+    return formData;
   }
 
   resetForms() {

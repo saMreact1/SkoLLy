@@ -99,3 +99,86 @@
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   }
 }
+
+
+.session-status-card {
+  display: flex;
+  gap: 20px;
+  padding: 10px;
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ff9800;
+  }
+
+  .status-content {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 8px 0;
+      color: #333;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      color: #666;
+    }
+
+    button {
+      height: 40px;
+    }
+  }
+}
+
+.session-info-card {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: #e8f5e9;
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  align-items: center;
+
+  mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: #4caf50;
+  }
+
+  .info-content {
+      flex: 1;
+
+      h3 {
+          margin: 0 0 8px 0;
+          color: #333;
+          font-size: 20px;
+      }
+
+      p {
+          margin: 0 0 16px 0;
+          color: #666;
+      }
+
+      button {
+          height: 40px;
+      }
+  }
+}
+
+@media (max-width: 768px) {
+  .session-status-card,
+  .session-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

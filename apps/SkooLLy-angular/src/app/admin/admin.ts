@@ -10,7 +10,7 @@ import { UserService } from '../core/services/user.service';
   styleUrl: './admin.scss'
 })
 export class Admin implements OnInit {
-  backendUrl = 'http://localhost:5000/';
+  backendUrl = 'http://localhost:5000';
 
   collapsed: boolean = false;
   admin: any;
@@ -22,7 +22,7 @@ export class Admin implements OnInit {
   constructor(
     private router: Router,
     private school: SchoolService,
-    private user: UserService
+    private user: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class Admin implements OnInit {
     this.school.getProfile().subscribe({
       next: (profile) => {
         this.schoolName = profile.name;
-        this.schoolLogo = `${this.backendUrl}/${profile.logo}`;
+        this.schoolLogo = `${this.backendUrl}${profile.logo}`;
       },
       error: (err) => {
         console.log('Failed to load profile', err);
@@ -44,8 +44,6 @@ export class Admin implements OnInit {
 
     this.getUser();
   }
-
-  
 
   getUser() {
     this.user.getUserProfile().subscribe({

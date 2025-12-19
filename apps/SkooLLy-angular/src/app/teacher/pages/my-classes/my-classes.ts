@@ -44,6 +44,7 @@ export class MyClasses {
 
   openStudents(classItem: any): void {
     this.dialog.open(ViewStudent, {
+      width: '600px',
       data: {
         className: classItem.name,
         students: [

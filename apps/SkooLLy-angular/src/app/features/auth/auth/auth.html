@@ -2,6 +2,49 @@
     <mat-icon routerLink="">west</mat-icon>
 </div>
 
+
+<div class="back">
+    <mat-icon routerLink="">west</mat-icon>
+</div>
+
+<!-- Success Modal -->
+<div class="modal-overlay" *ngIf="showSuccessModal" (click)="closeSuccessModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <mat-icon class="success-icon">check_circle</mat-icon>
+            <h2>Registration Successful!</h2>
+        </div>
+
+        <div class="modal-body">
+            <p class="welcome-text">Welcome aboard! Your account has been created.</p>
+            
+            <div class="info-box" *ngIf="isNewAdminSchool">
+                <mat-icon>info</mat-icon>
+                <div class="info-content">
+                    <h3>Next Steps:</h3>
+                    <p>As a school admin, you'll need to set up your academic sessions and terms after logging in.</p>
+                    <ul>
+                        <li>Create your current academic session</li>
+                        <li>Set up terms (First, Second, Third)</li>
+                        <li>Add classes and manage your school</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="login-prompt">
+                <p>Please log in with your credentials:</p>
+                <p class="user-email"><strong>{{ registeredUserEmail }}</strong></p>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button mat-flat-button color="primary" (click)="closeSuccessModal()">
+                Got it, Let me Login
+            </button>
+        </div>
+    </div>
+</div>
+
 <div class="auth-container">
     <div class="auth-box" [class.register]="!isLogin">
         <div class="form-toggle">
@@ -60,7 +103,6 @@
             <!-- Step 2: School Info (conditionally rendered later) -->
             <mat-step *ngIf="!schoolExists && !emailExists" [stepControl]="schoolInfoForm" class="mat-step">
                 <form [formGroup]="schoolInfoForm">
-                    <!-- <ng-template matStepLabel>School Info</ng-template> -->
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>School Email</mat-label>
                         <input matInput formControlName="schoolEmail">
@@ -85,6 +127,11 @@
                             <mat-option value="college">College</mat-option>
                         </mat-select>
                     </mat-form-field>
+
+                    <!-- <mat-form-field appearance="fill" class="full-width">
+                        <mat-label>Current Session</mat-label>
+
+                    </mat-form-field> -->
 
                     <mat-form-field appearance="fill" class="full-width">
                         <mat-label>State</mat-label>

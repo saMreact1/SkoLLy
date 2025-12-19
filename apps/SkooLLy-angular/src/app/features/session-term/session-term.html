@@ -1,0 +1,138 @@
+<div class="modal-container">
+    <h2 mat-dialog-title>
+        <mat-icon>calendar_today</mat-icon>
+        Setup Academic Session & Term
+    </h2>
+
+    <mat-dialog-content>
+        <mat-stepper [linear]="true" #stepper>
+            <!-- Step 1: Create Session -->
+            <mat-step [completed]="sessionCreated">
+                <ng-template matStepLabel>Create Session</ng-template>
+                
+                <div class="step-content">
+                    <div class="info-card">
+                        <mat-icon>info</mat-icon>
+                        <p>A session represents an academic year (e.g., 2024/2025)</p>
+                    </div>
+
+                    <div class="session-preview" *ngIf="!sessionCreated">
+                        <h3>Session to be created:</h3>
+                        <p class="session-name">{{ currentSessionName }}</p>
+                    </div>
+
+                    <div class="success-message" *ngIf="sessionCreated">
+                        <mat-icon>check_circle</mat-icon>
+                        <p>Session created successfully!</p>
+                    </div>
+
+                    <button 
+                        mat-flat-button 
+                        color="primary" 
+                        (click)="createSession()"
+                        [disabled]="isCreatingSession || sessionCreated"
+                        class="full-width-btn"
+                    >
+                        {{ isCreatingSession ? 'Creating...' : sessionCreated ? 'Session Created' : 'Create Session' }}
+                    </button>
+                </div>
+            </mat-step>
+
+            <!-- Step 2: Create First Term -->
+            <mat-step [completed]="termCreated">
+                <ng-template matStepLabel>Create First Term</ng-template>
+                
+                <div class="step-content">
+                    <div class="info-card">
+                        <mat-icon>info</mat-icon>
+                        <p>Create your first term to start the academic year</p>
+                    </div>
+
+                    <form [formGroup]="termForm" *ngIf="!termCreated">
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Term Name</mat-label>
+                            <mat-select formControlName="name">
+                                <mat-option value="FIRST">First Term</mat-option>
+                                <mat-option value="SECOND">Second Term</mat-option>
+                                <mat-option value="THIRD">Third Term</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>Start Date</mat-label>
+                            <input 
+                                matInput 
+                                [matDatepicker]="startPicker" 
+                                formControlName="startDate"
+                                placeholder="YYYY-MM-DD"
+                            />
+                            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #startPicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="fill" class="full-width">
+                            <mat-label>End Date</mat-label>
+                            <input 
+                                matInput 
+                                [matDatepicker]="endPicker" 
+                                formControlName="endDate"
+                                placeholder="YYYY-MM-DD"
+                            />
+                            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #endPicker></mat-datepicker>
+                        </mat-form-field>
+
+                        <button 
+                            mat-flat-button 
+                            color="primary" 
+                            (click)="createTerm()"
+                            [disabled]="termForm.invalid || isCreatingTerm"
+                            class="full-width-btn">
+                            {{ isCreatingTerm ? 'Creating...' : 'Create Term' }}
+                        </button>
+                    </form>
+
+                    <div class="success-message" *ngIf="termCreated">
+                        <mat-icon>check_circle</mat-icon>
+                        <p>First term created successfully!</p>
+                    </div>
+                </div>
+            </mat-step>
+
+            <!-- Step 3: Complete -->
+            <mat-step>
+                <ng-template matStepLabel>Complete</ng-template>
+                
+                <div class="step-content complete-step">
+                    <mat-icon class="large-icon">celebration</mat-icon>
+                    <h3>All Set!</h3>
+                    <p>Your academic session and term have been set up successfully.</p>
+                    
+                    <div class="summary-card">
+                        <h4>Summary:</h4>
+                        <ul>
+                            <li><strong>Session:</strong> {{ currentSessionName }}</li>
+                            <li><strong>Term:</strong> {{ termForm.get('name')?.value }} Term</li>
+                            <li><strong>Duration:</strong> {{ formatDate(termForm.get('startDate')?.value) }} - {{ formatDate(termForm.get('endDate')?.value) }}</li>
+                        </ul>
+                    </div>
+
+                    <button 
+                        mat-flat-button 
+                        color="accent" 
+                        (click)="closeModal()"
+                        class="full-width-btn"
+                    >
+                        Go to Dashboard
+                    </button>
+                </div>
+            </mat-step>
+        </mat-stepper>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-button (click)="skipSetup()" *ngIf="!termCreated">
+            Skip for Now
+        </button>
+    </mat-dialog-actions>
+</div>

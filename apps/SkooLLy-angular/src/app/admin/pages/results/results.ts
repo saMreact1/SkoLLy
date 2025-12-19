@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 
 import * as XLSX from 'xlsx';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
+import { SessionService } from '../../../core/services/session.service';
 
 @Component({
   selector: 'app-results',
@@ -26,7 +27,7 @@ import { MatTableModule } from '@angular/material/table';
   templateUrl: './results.html',
   styleUrl: './results.scss'
 })
-export class Results {
+export class Results implements OnInit {
   classes = ['JSS1', 'JSS2', 'SS1'];
   terms = ['1st Term', '2nd Term', '3rd Term'];
   sessions = ['2023/2024', '2024/2025'];
@@ -43,6 +44,18 @@ export class Results {
   ];
 
   displayedColumns = ['name', 'ca', 'exam', 'total', 'grade', 'remark', 'position'];
+
+  constructor(
+    private sessionService: SessionService
+  ) {}
+
+  ngOnInit(): void {
+    
+  }
+
+  getSessions() {
+    
+  }
 
   recalculate(student: any) {
     student.ca = Math.min(+student.ca || 0, 30); // Max 30

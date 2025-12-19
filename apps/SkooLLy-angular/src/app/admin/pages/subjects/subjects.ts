@@ -1,5 +1,5 @@
 import { NgIf } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SubjectModal } from '../../components/modals/subject-modal/subject-modal';
 import { MatCardModule } from '@angular/material/card';
@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
@@ -31,11 +31,12 @@ import { FormsModule } from '@angular/forms';
     NgIf,
     MatFormFieldModule,
     MatMenuModule,
+    MatSortModule
   ],
   templateUrl: './subjects.html',
   styleUrl: './subjects.scss'
 })
-export class Subjects implements OnInit {
+export class Subjects implements OnInit, AfterViewInit {
   subjects: Subject[] = [];
   teachers: any[] = [];
   columnsToDisplay = ['name', 'code', 'teacher', 'actions'];
@@ -53,15 +54,20 @@ export class Subjects implements OnInit {
     this.loadSubjects();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.sort = this.sort;
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    this.dataSource.filter = filterValue;
   }
 
   loadSubjects() {
     this.subject.getSubjects().subscribe({
-      next: (data: Subject[]) => {
-        this.subjects = data;
-        this.dataSource.data = data;
+      next: (data: any) => {
+        this.subjects = data.subjects;
+        this.dataSource.data = data.subjects;
       },
       error: (err) => {
         console.error('Error loading subjects', err);

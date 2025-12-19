@@ -1,3 +1,160 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .success-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #4caf50;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    margin: 0;
+    color: #333;
+    font-size: 28px;
+    font-weight: 600;
+  }
+}
+
+.modal-body {
+  .welcome-text {
+    text-align: center;
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 24px;
+  }
+
+  .info-box {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: #e3f2fd;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    border-left: 4px solid #2196f3;
+
+    mat-icon {
+      color: #2196f3;
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .info-content {
+      flex: 1;
+
+      h3 {
+        margin: 0 0 12px 0;
+        color: #1976d2;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0 0 12px 0;
+        color: #555;
+        line-height: 1.6;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+        color: #555;
+
+        li {
+          margin-bottom: 8px;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  .login-prompt {
+    text-align: center;
+    padding: 20px;
+    background: #f5f5f5;
+    border-radius: 12px;
+
+    p {
+      margin: 0 0 8px 0;
+      color: #666;
+    }
+
+    .user-email {
+      font-size: 18px;
+      color: #333;
+
+      strong {
+        color: #1976d2;
+      }
+    }
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+
+  button {
+    min-width: 200px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .back {
   position: absolute;
   top: 2rem;
