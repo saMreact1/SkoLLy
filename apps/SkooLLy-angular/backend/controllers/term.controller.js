@@ -143,11 +143,11 @@ exports.getCurrentTerm = async (req, res) => {
 exports.updateTermBySession = async (req, res) => {
   try {
     const {sessionId} = req.params;
-    let { startDate, endDate, termId } = req.body;
-    
-    startDate = startDate.trim();
-    endDate = endDate.trim()
-    sessionId = sessionId.trim();
+    const { startDate, endDate, termId } = req.body;
+
+    // startDate = startDate.trim();
+    // endDate = endDate.trim()
+    // sessionId = sessionId.trim();
 
     if(!isValidObjectId(sessionId)) return res.status(400).json({ message: "Invalid session Id" });
     if(!isValidObjectId(termId)) return res.status(400).json({ message: "Invalid term Id" });
