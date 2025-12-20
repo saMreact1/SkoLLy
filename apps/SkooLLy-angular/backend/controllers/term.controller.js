@@ -133,9 +133,49 @@ exports.getCurrentTerm = async (req, res) => {
     });
   } catch (error) {
     console.log(
-      "An error occured in the get current session controller: ",
+      "An error occured in the get current term controller: ",
       error
     );
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+exports.updateTermBySession = async (req, res) => {
+  try {
+    const {sessionId} = req.params;
+    let { startDate, endDate, termId } = req.body;
+    
+    startDate = startDate.trim();
+    endDate = endDate.trim()
+    sessionId = sessionId.trim();
+
+    if(!isValidObjectId(sessionId)) return res.status(400).json({ message: "Invalid session Id" });
+    if(!isValidObjectId(termId)) return res.status(400).json({ message: "Invalid term Id" });
+    if (!termId) return res.status(400).json({ message: "Term Id is required"});
+    if (!checkSpecificDateFormat(startDate))
+      return res.status(400).json({ message: "Invalid start date format" });
+    if (!checkSpecificDateFormat(endDate))
+      return res.status(400).json({ message: "Invalid end date format" });
+
+    const session = await Session.findOne({
+      _id: sessionId
+    });
+    if(!session) return res.status(404).json({ message: "No session found with this ID: " + sessionId });
+    if (session.isActive === false) return res.status(401).json({ message: "Session is closed, You can't add update the term at the moment" });
+    
+    const term = await Term.findById(termId);
+    if (!term) return res.status(404).json({ message: "No term found with this ID: " + termId });
+
+    if (startDate) term.startDate = new Date(`${startDate}T00:00:00Z`);
+    if (endDate) term.endDate = new Date(`${endDate}T23:59:59Z`);
+
+    await term.save();
+    res.status(200).json({ message: "Term updated successfully!", term});
+  } catch (error) {
+    console.log(
+      "An error occured in the update term controller: ",
+      error
+    );
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
