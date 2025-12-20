@@ -169,6 +169,8 @@ exports.updateTermBySession = async (req, res) => {
     if (startDate) term.startDate = new Date(`${startDate}T00:00:00Z`);
     if (endDate) term.endDate = new Date(`${endDate}T23:59:59Z`);
 
+    if(term.isActive === false) term.isActive = true;
+
     await term.save();
     res.status(200).json({ message: "Term updated successfully!", term});
   } catch (error) {
