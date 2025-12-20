@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Session, SessionService } from '../../../core/services/session.service';
+import { Session, SessionService, Term } from '../../../core/services/session.service';
 import { MatDialog, MatDialogActions, MatDialogContent } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { CreateTermDialogComponent } from '../../components/dialogs/create-term-dialog';
 import { ConfirmDialogComponent } from '../../components/dialogs/confirm-dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { UpdateTermDialogComponent } from '../../components/dialogs/update-term-dialog';
 
 
 @Component({
@@ -43,7 +44,6 @@ export class ManageSessionTerm implements OnInit {
   loadSessions(): void {
     this.isLoading = true;
     
-    // Load current session with terms
     this.sessionService.getCurrentSessionWithTerms().subscribe({
       next: (session) => {
         this.currentSession = session;
@@ -105,6 +105,24 @@ export class ManageSessionTerm implements OnInit {
     const dialogRef = this.dialog.open(CreateTermDialogComponent, {
       width: '500px',
       data: { sessionId }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadSessions();
+      }
+    });
+  }
+
+  openUpdateTermDialog(term: Term): void {
+    if (!this.currentSession) return;
+
+    const dialogRef = this.dialog.open(UpdateTermDialogComponent, {
+      width: '500px',
+      data: { 
+        sessionId: this.currentSession._id,
+        term: term
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

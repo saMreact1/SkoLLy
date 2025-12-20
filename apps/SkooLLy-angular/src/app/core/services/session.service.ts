@@ -218,6 +218,17 @@ export class SessionService {
     return this.http.post<TermResponse>(this.termsUrl, termData);
   }
 
+  updateTerm(sessionId: string, termId: string, termData: { startDate: string; endDate: string }): Observable<TermResponse> {
+    return this.http.put<TermResponse>(
+      `${this.termsUrl}/${sessionId}`,
+      { 
+        termId,
+        startDate: termData.startDate,
+        endDate: termData.endDate
+      }
+    );
+  }
+
   getCurrentTerm(): Observable<CurrentTermResponse> {
     return this.http.get<CurrentTermResponse>(
       `${this.termsUrl}/current`

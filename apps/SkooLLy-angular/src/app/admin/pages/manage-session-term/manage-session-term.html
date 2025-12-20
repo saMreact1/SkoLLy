@@ -70,6 +70,7 @@
                             class="term-card" 
                             *ngFor="let term of currentSession.terms"
                             [class.active-term]="term.isActive"
+                            [class.needs-update]="!term.startDate || !term.endDate"
                         >
                             <div class="term-header">
                                 <div class="term-name">
@@ -80,15 +81,35 @@
                                     {{ term.isActive ? 'Active' : 'Inactive' }}
                                 </span>
                             </div>
+
                             <div class="term-dates">
-                                <div class="date-item">
-                                    <mat-icon>start</mat-icon>
-                                    <span>{{ formatDate(term.startDate) }}</span>
+                                <div *ngIf="term.startDate && term.endDate">
+                                    <div class="date-item">
+                                        <mat-icon>start</mat-icon>
+                                        <span>{{ formatDate(term.startDate) }}</span>
+                                    </div>
+                                    <div class="date-item">
+                                        <mat-icon>end</mat-icon>
+                                        <span>{{ formatDate(term.endDate) }}</span>
+                                    </div>
                                 </div>
-                                <div class="date-item">
-                                    <mat-icon>end</mat-icon>
-                                    <span>{{ formatDate(term.endDate) }}</span>
+
+                                <div *ngIf="!term.startDate || !term.endDate" class="no-dates-message">
+                                    <mat-icon>warning</mat-icon>
+                                    <span>Dates not set</span>
                                 </div>
+                            </div>
+
+                            <div class="term-actions">
+                                <button 
+                                    mat-raised-button 
+                                    [color]="(!term.startDate || !term.endDate) ? 'warn' : 'primary'"
+                                    (click)="openUpdateTermDialog(term)"
+                                    class="update-btn"
+                                >
+                                    <mat-icon>{{ (!term.startDate || !term.endDate) ? 'add' : 'edit' }}</mat-icon>
+                                    {{ (!term.startDate || !term.endDate) ? 'Set Dates' : 'Update Dates' }}
+                                </button>
                             </div>
                         </div>
                     </div>
