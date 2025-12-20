@@ -37,36 +37,29 @@ cron.schedule("* * * * *", async () => {
 });
 
 async function createNextTerm(termName, sessionId) {
-    if (!termName || !sessionId) {
-        console.log("Create Next Term function - All fields are required");
-        return;
-    }
-    const exists = await Term.exists({
-        session: sessionId,
-        name: termName.toUpperCase()
-    });
-    const currentSession = await Session.findOne({
-        _id: sessionId,
-        isActive: true,
-    });
-    if (!currentSession) {
-        console.log("❌ Session is already closed and cannot create a term");
-        return
-    };
-    if (exists) {
-        console.log("🕣 " + termName + " already exists in session with id: " + sessionId);
-        return;
-    };
-    
-    const newTerm =  new Term({
-        name: termName,
-        session: sessionId,
-        isActive: true,
-    });
-    currentSession.terms.push(newTerm._id);
+    if (!termName || !sessionId) return;
 
-    await newTerm.save();
-    await currentSession.save();
+    const currentSession = await Session.findOne({ _id: sessionId, isActive: true });
+    if (!currentSession) return;
+
+    // Atomic creation: create term only if it doesn't exist
+    const newTerm = await Term.findOneAndUpdate(
+        { session: sessionId, name: termName.toUpperCase() }, // filter
+        {
+            $setOnInsert: { 
+                name: termName.toUpperCase(),
+                session: sessionId,
+                isActive: false
+            }
+        },
+        { upsert: true, new: true }
+    );
+
+    // Ensure the term is in session.terms array
+    if (!currentSession.terms.includes(newTerm._id)) {
+        currentSession.terms.push(newTerm._id);
+        await currentSession.save();
+    }
 
     console.log(`✅ Created ${termName} term`);
 }
