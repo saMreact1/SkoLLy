@@ -3,6 +3,10 @@ const cors = require('cors');
 const app = express();
 const path = require('path');
 
+// CRON JOBS
+require("./cron-jobs/endTermJob");
+require("./cron-jobs/endSessionJob");
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -8,11 +8,9 @@ const termSchema = new mongoose.Schema({
     },
     startDate: {
         type: Date,
-        required: true,
     },
     endDate: {
         type: Date,
-        required: true,
     },
     session: {
         type: mongoose.Schema.Types.ObjectId,
