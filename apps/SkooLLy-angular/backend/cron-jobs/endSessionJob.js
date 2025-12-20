@@ -52,7 +52,7 @@ async function createNewSession (startYear, endYear, schoolId, schoolName) {
         const firstTerm = new Term({
             session: newSession._id,
             name: "FIRST",
-            isActive: true
+            isActive: false
         });
         newSession.terms.push(firstTerm._id);
         await newSession.save();
