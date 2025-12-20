@@ -65,7 +65,7 @@ async function createNextTerm(termName, sessionId) {
     });
     currentSession.terms.push(newTerm._id);
 
-    await term.save();
+    await newTerm.save();
     await currentSession.save();
 
     console.log(`✅ Created ${termName} term`);
