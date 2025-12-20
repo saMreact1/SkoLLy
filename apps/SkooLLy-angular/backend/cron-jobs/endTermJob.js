@@ -54,14 +54,19 @@ async function createNextTerm(termName, sessionId) {
         return
     };
     if (exists) {
-        console.log("🕣 " + termName + " already exists in session with id: " + sessionId)
+        console.log("🕣 " + termName + " already exists in session with id: " + sessionId);
+        return;
     };
     
-    await Term.create({
+    const newTerm =  new Term({
         name: termName,
         session: sessionId,
         isActive: true,
     });
+    currentSession.terms.push(newTerm._id);
+
+    await term.save();
+    await currentSession.save();
 
     console.log(`✅ Created ${termName} term`);
 }
