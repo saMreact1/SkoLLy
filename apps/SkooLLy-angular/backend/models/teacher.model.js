@@ -6,6 +6,11 @@ const teacherSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  userId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   phone: String,
   gender: String,
   bio: String,
@@ -24,6 +29,10 @@ const teacherSchema = new mongoose.Schema({
   subject: {
     type: String,
     default: ''
+  },
+  subjectId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Subject',
   },
   classes: [
     {
