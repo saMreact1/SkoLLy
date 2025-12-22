@@ -5,10 +5,10 @@ const { adminMiddleware } = require('../middlewares/admin.middleware');
 const { authMiddleware } = require('../middlewares/auth.middleware');
 
 
+router.get("/current", authMiddleware, getCurrentTerm)
 router.get('/:sessionId', authMiddleware, adminMiddleware, getTermsBySession);
 router.put('/:sessionId', authMiddleware, adminMiddleware, updateTermBySession);
 router.post('/', authMiddleware, adminMiddleware, createTerm)
-router.get("/current", authMiddleware, getCurrentTerm);
 
 
 module.exports = router;

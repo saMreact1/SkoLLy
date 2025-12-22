@@ -5,6 +5,7 @@ import Loader from "../components/shared/Loader";
 import { useTimetableStore } from "../store/authStore";
 import { useEffect, useState } from "react";
 import { convertTimetableToEvents } from "../utils/helper";
+import TimetableComponent from "../components/timetable/TimetableComponent";
 
 const events = [
   {
@@ -27,6 +28,16 @@ const events = [
   },
 ];
 
+const timetableData = [
+  { day: "Monday", time: "8:00 - 9:00", subject: "Mathematics" },
+  { day: "Monday", time: "9:00 - 10:00", subject: "English" },
+  { day: "Monday", time: "10:00 - 11:00", subject: "Physics" },
+
+  { day: "Tuesday", time: "8:00 - 9:00", subject: "Chemistry" },
+  { day: "Tuesday", time: "9:00 - 10:00", subject: "Biology" },
+];
+
+
 
 const Timetable = () => {
   const { data: user } = useStudents();
@@ -35,6 +46,7 @@ const Timetable = () => {
   const { timetable: timeTable, setTimetable } = useTimetableStore();
   const [events, setEvents] = useState<any[]>([]);
 
+  console.log(timetable?.data)
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
@@ -64,7 +76,8 @@ const Timetable = () => {
   }
   return (
     <div>
-      <TimetableCalendar events={events} />
+      {/* <TimetableCalendar events={events} /> */}
+      <TimetableComponent data={timeTable ?? {}}/>
     </div>
   );
 };

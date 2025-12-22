@@ -1,12 +1,15 @@
 import { FaSearch } from "react-icons/fa"
-import { IoIosArrowDown } from "react-icons/io";
+// import { IoIosArrowDown } from "react-icons/io";
 import { useLocation } from "react-router-dom";
+
 
 import type { UserProps } from "../../types/student";
 import { useNotifications } from "../../hooks/useStudents";
 import { useNotificationStore } from "../../store/authStore";
 import { useState } from "react";
 import NotificationDropDown from "./NotificationDropDown";
+import DropdownMenu from "./DropdownMenu";
+
 
 const HeaderBar = ({...user}: UserProps) => {
   const pathname = useLocation().pathname; 
@@ -22,11 +25,9 @@ const HeaderBar = ({...user}: UserProps) => {
       setShowNotification(!showNotification);
     }
 
-   
-  
   return (
     <div 
-    className="min-w-full bg-translate py-2 px-8">
+    className="bg-black py-2 px-8 fixed w-[84%] bottom-0 top-0 left-60 h-15 rounded-b-2xl">
       <div className="flex justify-between items-center">
         <div className="flex relative items-center">
           <input 
@@ -41,7 +42,7 @@ const HeaderBar = ({...user}: UserProps) => {
           </div>
         </div>
         {/* breadcrumbs */}
-        <div className="text-black font-medium text-lg md:text-sm">
+        <div className="text-slate-200 font-medium text-lg md:text-sm">
          <span className="text-slate-400">Dashboard /</span> 
          {" "} 
           {pathname === "/" ? " Home" : pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2)}
@@ -59,21 +60,23 @@ const HeaderBar = ({...user}: UserProps) => {
             </div>
           </div>
            {/* dropdown */}
-          { showNotification && (
-            <div className="absolute z-9999 top-25 right-5 w-[350px] bg-black px-4 py-4 rounded-md transition-all duration-2000 mt-2 shadow-lg ease-in-out">
-              <NotificationDropDown notifications={allNotifications}/>
-            </div>
+          { showNotification && (<></>
+            // <div className="absolute z-9999 top-25 right-60 w-[350px] bg-black px-4 py-4 rounded-md transition-all duration-2000 -mt-10 shadow-lg ease-in-out">
+            //   <NotificationDropDown notifications={allNotifications}/>
+            // </div>
           ) }
          
         </div>
         {/* profile */}
-        <div className="bg-black px-2 text-slate-100 py-2 md:py-1 rounded-full hover:bg-slate-100 hover:text-black cursor-pointer">
-          <div className="flex items-center space-x-2">
+        <div className="bg-black px-2 text-slate-100 py-2 md:py-1 rounded-full hover:bg-black hover:text-black cursor-pointer">
+          <div className="flex items-center">
             <img src="/school-logo.png" 
             className="rounded-full w-10 h-10 inline-block mr-2 md:size-8"
             alt="profile image" />
-            <span className="font-medium text-lg md:text-sm">{user.user?.fullName}</span>
-            <IoIosArrowDown className="md:text-sm"/>
+            {/* <span className="font-medium text-lg md:text-sm">{user.user?.fullName}</span>
+            <IoIosArrowDown className="md:text-sm"/>  */}
+            
+            <DropdownMenu name={user.user?.fullName} />
           </div>
 
          

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchStudentProfile, getClasses, getNotification, getSchoolInfo, getSubjects, getTimeTable } from "../api/students";
+import { fetchStudentProfile, getClasses, getCurrentTerm, getNotification, getSchoolInfo, getSubjects, getTimeTable } from "../api/students";
 
 
 export function useStudents() {
@@ -57,4 +57,10 @@ export function useNotifications(){
 //         staleTime: 5 * 60 * 1000, // 5 minutes
 //     });
 // }
-
+export function useTerm(){
+    return useQuery({
+        queryKey: ['term'],
+        queryFn: getCurrentTerm,
+        staleTime: 5 * 60 * 1000,
+    });
+}

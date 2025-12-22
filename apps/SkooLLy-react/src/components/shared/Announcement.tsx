@@ -4,7 +4,7 @@ const Announcement = ({ text, link }: { text: string; link: string }) => {
   const [show, setShow] = useState(true);
   if (!show) return null;
   return (
-    <div className="animate-pulse flex items-center justify-between border-b border-gray-200 bg-gray-100 px-4 py-2 text-gray-900 shadow-lg">
+    <div className="flex items-center justify-between border-b border-gray-200 bg-gray-100 px-4 py-2 text-gray-900 shadow-lg w-[80%] ml-68 z-9999 mt-18 animate-pulse h-10 mb-0" >
       <span></span>
 
       <p className="text-center font-medium">
