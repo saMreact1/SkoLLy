@@ -1,4 +1,7 @@
 const Teacher = require('../models/teacher.model');
+const Test = require("../models/test.model");
+const Session = require("../models/session.model");
+const Term = require("../models/term.model");
 
 exports.getAllTeachers = async (req, res) => {
   try {
@@ -10,3 +13,5 @@ exports.getAllTeachers = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+
