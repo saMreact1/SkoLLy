@@ -34,6 +34,10 @@ interface NotificationStore {
 //     setUpdateProfile : (updateProfile: any) => void;
 // }
 
+interface Term {
+    term: any;
+    setTerm: (term: any) => void;
+}
 
 export const useAuthStore = create<AuthState>((set) => ({
     user: null,
@@ -70,4 +74,7 @@ export const useNotificationStore = create<NotificationStore>((set) => ({
 //     setUpdateProfile: (updateProfile) => set({updateProfile}) 
 // }));
 
-
+export const useTermStore = create<Term>((set) => ({
+    term: null,
+    setTerm: (term) => set({term})
+}))

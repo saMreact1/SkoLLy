@@ -67,7 +67,7 @@ const App = () => {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Toaster position="bottom-right" />
+        <Toaster position="bottom-left" />
         <Suspense fallback={<div className="h-screen w-screen flex items-center justify-center"><Loader2 /></div>}>
           <RouterProvider router={router} />
         </Suspense>
