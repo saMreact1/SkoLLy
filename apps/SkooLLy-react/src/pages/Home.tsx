@@ -10,12 +10,14 @@ import {
   useClassesStore,
   useNotificationStore,
   useSchoolStore,
+  useTermStore,
 } from "../store/authStore";
 import {
   useClasses,
   useNotifications,
   useSchools,
   useStudents,
+  useTerm,
 } from "../hooks/useStudents";
 import Loader from "../components/shared/Loader";
 
@@ -40,14 +42,14 @@ const Home = () => {
   const { data: classes } = useClasses();
   const allClass = useClassesStore((state) => (state.classes = classes));
 
-  const {
-    data: notifications,
-  } = useNotifications();
+  const { data: notifications } = useNotifications();
 
   const allNotifications = useNotificationStore(
     (state) => (state.notification = notifications)
-  );
+  ); 
 
+  const {data: termData} = useTerm();
+  const term = useTermStore((state) => (state.term = termData));
 
   if (error) toast.error(error.message);
 
@@ -78,7 +80,7 @@ const Home = () => {
         </div>
       )}
       {!isLoading && profile && (
-        <div className="flex md:flex-col-reverse sm:flex-col lg:flex-row w-full lg:space-x-6 px-2 md:space-y-6 md:items-center">
+        <div className="flex md:flex-col-reverse sm:flex-col lg:flex-row lg:space-x-6 px-2 md:space-y-6 md:items-center w-full mt-6 z-999">
           {/* left */}
           <div className="lg:w-8/12 flex flex-col space-y-6 md:mt-4">
             <h1 className="font-medium text-xl md:hidden lg:block">
@@ -154,7 +156,7 @@ const Home = () => {
           {/* right */}
           <div className="lg:w-4/12">
             <div className="flex flex-col space-y-4 w-full">
-              <div className="w-full h-32 bg-slate-100 rounded-lg flex flex-col justify-center items-center relative">
+              <div className="w-full h-38 bg-slate-100 rounded-lg flex flex-col justify-center items-center relative">
                 {/* <h2 className="font-medium text-lg">Profile</h2> */}
                 <div className="absolute -top-8 p-2 rounded-full bg-[#dcdada]">
                   <img
@@ -170,7 +172,16 @@ const Home = () => {
                   {school?.name.toUpperCase()}
                 </p>
                 <p className="text-sm text-gray-600">{allClass?.name}</p>
-                <p className="text-sm font-bold text-gray-600">1st Term</p>
+                <p className="text-sm font-bold text-gray-600">
+                  {term?.term === "FIRST" && "1st" || term?.term === "SECOND" && "2nd" || term?.term === "THIRD" && "3rd" ||  "" }
+                  {" "}
+                  Term
+                </p>
+                <p className="text-xs text-gray-500">
+                  {term?.session || "" }
+                  {" "}
+                  session
+                </p>
               </div>
 
               <div className="w-full h-32 bg-slate-100 rounded-lg flex flex-col justify-center items-center">

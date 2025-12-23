@@ -4,6 +4,7 @@ type Props = {
   notifications: Notification[];
 };
 
+
 const NotificationDropDown = ({ notifications }: Props) => {
   return (
     <div className="space-y-3">

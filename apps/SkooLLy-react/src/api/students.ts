@@ -96,3 +96,55 @@ export async function updateUserProfile(data: any) {
   const result = await res.json();
   return result;
 }
+
+export async function getCurrentTerm() {
+  const res = await fetch(`${ApiBaseUrl}/terms/current`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch current term");
+  const data = await res.json();
+  return data;
+}
+
+export async function getTestByClassTermSubject() {
+  const res = await fetch(`${ApiBaseUrl}/sessions/current-session`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to fetch current session");
+  const data = await res.json();
+  return data;
+}
+
+export async function getAllTestForClass(className: String) {
+  const res = await fetch(`${ApiBaseUrl}/test/class/${className}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to get test by id");
+  const data = await res.json();
+  return data;
+}
+
+export async function getTestById(testId: String) {
+  const res = await fetch(`${ApiBaseUrl}/test/${testId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) throw new Error("Failed to get test by id");
+  const data = await res.json();
+  return data;
+}
