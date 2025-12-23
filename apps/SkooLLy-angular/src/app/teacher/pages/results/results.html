@@ -1,83 +1,209 @@
-<mat-card class="results-card">
-  <h2>📝 Upload Results</h2>
+<div class="results-container">
+  <div class="header-section">
+    <div class="title-wrapper">
+      <span class="icon">📊</span>
+      <h1>Student Results Management</h1>
+    </div>
+    <p class="subtitle">Upload and manage student examination results</p>
+  </div>
 
-  <form [formGroup]="resultForm" class="filter-form">
-    <mat-form-field appearance="fill">
-      <mat-label>Class</mat-label>
-      <mat-select formControlName="selectedClass">
-        <mat-option *ngFor="let cls of classes" [value]="cls">{{ cls }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Subject</mat-label>
-      <mat-select formControlName="selectedSubject">
-        <mat-option *ngFor="let sub of subjects" [value]="sub">{{ sub }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Term</mat-label>
-      <mat-select formControlName="term">
-        <mat-option *ngFor="let term of terms" [value]="term">{{ term }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Session</mat-label>
-      <mat-select formControlName="session">
-        <mat-option *ngFor="let session of sessions" [value]="session">{{ session }}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button mat-flat-button color="primary" type="button" (click)="loadStudents()">Load Students</button>
-  </form>
-
-  <div *ngIf="students.length" class="results-table-container">
-    <table mat-table [dataSource]="students" class="mat-elevation-z2">
-
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Student </th>
-        <td mat-cell *matCellDef="let student"> {{ student.name }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="test">
-        <th mat-header-cell *matHeaderCellDef> CA(30) </th>
-        <td mat-cell *matCellDef="let student">
-          <input matInput type="number" [(ngModel)]="student.test" (ngModelChange)="calculate(student)">
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="exam">
-        <th mat-header-cell *matHeaderCellDef> Exam(70) </th>
-        <td mat-cell *matCellDef="let student">
-          <input matInput type="number" [(ngModel)]="student.exam" (ngModelChange)="calculate(student)">
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef> Total(100) </th>
-        <td mat-cell *matCellDef="let student"> {{ student.total }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="grade">
-        <th mat-header-cell *matHeaderCellDef> Grade </th>
-        <td mat-cell *matCellDef="let student"> {{ student.grade }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="remark">
-        <th mat-header-cell *matHeaderCellDef> Remark </th>
-        <td mat-cell *matCellDef="let student"> {{ student.remark }} </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="['name', 'test', 'exam', 'total', 'grade', 'remark']"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['name', 'test', 'exam', 'total', 'grade', 'remark'];"></tr>
-    </table>
-
-    <div class="actions">
-      <button mat-raised-button color="accent" (click)="submitResults()">Save & Submit</button>
+  <mat-card class="filter-card">
+    <div class="card-header">
+      <h2>🔍 Select Parameters</h2>
+      <p>Choose class, subject, term and session to load students</p>
     </div>
 
-    <p *ngIf="isSubmitted" class="confirmation">✅ Results submitted successfully!</p>
+    <form [formGroup]="resultForm" class="modern-filter-form">
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Class</mat-label>
+          <mat-select formControlName="selectedClass">
+            <mat-option *ngFor="let cls of classes" [value]="cls">
+              {{ cls }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>school</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Subject</mat-label>
+          <mat-select formControlName="selectedSubject">
+            <mat-option *ngFor="let sub of subjects" [value]="sub">
+              {{ sub }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>book</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div class="form-row">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Term</mat-label>
+          <mat-select formControlName="term">
+            <mat-option *ngFor="let term of terms" [value]="term">
+              {{ term }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>calendar_today</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Session</mat-label>
+          <mat-select formControlName="session">
+            <mat-option *ngFor="let session of sessions" [value]="session">
+              {{ session }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matPrefix>event</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <button 
+        mat-raised-button 
+        color="primary" 
+        type="button" 
+        (click)="loadStudents()"
+        class="load-button">
+        <mat-icon>download</mat-icon>
+        Load Students
+      </button>
+    </form>
+  </mat-card>
+
+  <mat-card *ngIf="students.length" class="results-card">
+    <div class="card-header">
+      <div>
+        <h2>📝 Enter Results</h2>
+        <p class="student-count">{{ students.length }} students loaded</p>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><strong>CA:</strong> Max 30</span>
+        <span class="legend-item"><strong>Exam:</strong> Max 70</span>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="students" class="modern-table mat-elevation-z4">
+        
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="name-column"> 
+            <mat-icon class="header-icon">person</mat-icon>
+            Student Name 
+          </th>
+          <td mat-cell *matCellDef="let student" class="name-cell"> 
+            <div class="student-info">
+              <div class="avatar">{{ student.name.charAt(0) }}</div>
+              <span>{{ student.name }}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="test">
+          <th mat-header-cell *matHeaderCellDef> 
+            <mat-icon class="header-icon">assignment</mat-icon>
+            CA (30) 
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <mat-form-field appearance="outline" class="score-input">
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="student.test" 
+                (ngModelChange)="calculate(student)"
+                min="0"
+                max="30"
+                placeholder="0">
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="exam">
+          <th mat-header-cell *matHeaderCellDef> 
+            <mat-icon class="header-icon">description</mat-icon>
+            Exam (70) 
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <mat-form-field appearance="outline" class="score-input">
+              <input 
+                matInput 
+                type="number" 
+                [(ngModel)]="student.exam" 
+                (ngModelChange)="calculate(student)"
+                min="0"
+                max="70"
+                placeholder="0">
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef> 
+            <mat-icon class="header-icon">calculate</mat-icon>
+            Total 
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <span class="total-score">{{ student.total }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef> 
+            <mat-icon class="header-icon">grade</mat-icon>
+            Grade 
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <span class="grade-badge" [class]="'grade-' + student.grade.toLowerCase()">
+              {{ student.grade || '-' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="remark">
+          <th mat-header-cell *matHeaderCellDef> 
+            <mat-icon class="header-icon">comment</mat-icon>
+            Remark 
+          </th>
+          <td mat-cell *matCellDef="let student">
+            <span class="remark" [class]="'remark-' + student.grade.toLowerCase()">
+              {{ student.remark || '-' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['name', 'test', 'exam', 'total', 'grade', 'remark']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name', 'test', 'exam', 'total', 'grade', 'remark'];" class="table-row"></tr>
+      </table>
+    </div>
+
+    <div class="action-bar">
+      <button 
+        mat-stroked-button 
+        color="warn"
+        (click)="clearResults()"
+        class="secondary-button">
+        <mat-icon>clear</mat-icon>
+        Clear All
+      </button>
+      
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="submitResults()"
+        class="submit-button">
+        <mat-icon>cloud_upload</mat-icon>
+        Save & Submit Results
+      </button>
+    </div>
+
+    <div *ngIf="isSubmitted" class="success-message mat-elevation-z2">
+      <mat-icon>check_circle</mat-icon>
+      <span>Results submitted successfully!</span>
+    </div>
+  </mat-card>
+
+  <div *ngIf="!students.length && resultForm.dirty" class="empty-state">
+    <mat-icon>inbox</mat-icon>
+    <h3>No Students Loaded</h3>
+    <p>Select parameters above and click "Load Students" to begin</p>
   </div>
-</mat-card>
+</div>
