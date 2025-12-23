@@ -27,8 +27,8 @@ const HeaderBar = ({...user}: UserProps) => {
 
   return (
     <div 
-    className="bg-black py-2 px-8 fixed w-[84%] bottom-0 top-0 left-60 h-15 rounded-b-2xl">
-      <div className="flex justify-between items-center">
+    className="bg-black py-2 px-8 fixed w-[92%] bottom-0 top-0 left-45 h-15 rounded-b-l-sm z-9999">
+      <div className="flex justify-around items-center">
         <div className="flex relative items-center">
           <input 
           autoFocus

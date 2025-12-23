@@ -1,10 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import { useClasses, useSubjects } from "../hooks/useStudents";
-import { useClassesStore, useSubjectStore } from "../store/authStore";
+import {
+  useClasses,
+  useSubjects,
+  useTestsForClass,
+} from "../hooks/useStudents";
+import {
+  useClassesStore,
+  useSubjectStore,
+  useTestStore,
+} from "../store/authStore";
 import toast from "react-hot-toast";
 import Loader from "../components/shared/Loader";
 import Card from "../components/shared/Card";
+import type { TestType } from "../types/testorexam";
+
 
 const Tests = () => {
   const { data, isLoading, error } = useSubjects();
@@ -16,12 +26,18 @@ const Tests = () => {
   const [subjects, setSubjects] = useState([]);
 
   const { data: classes } = useClasses();
-  const allClass = useClassesStore((state) => (state.classes = classes));
+  const currentClass = useClassesStore((state) => (state.classes = classes));
+
+
+  const { data: tests, isLoading: allTestLoading } = useTestsForClass(
+    currentClass?.name
+  );
+  const allTest = useTestStore((state) => (state.test = tests?.tests as []));
 
   useEffect(() => {
     setSubjects(allSubjects);
   }, [allSubjects]);
-  if (isLoading)
+  if (isLoading || allTestLoading)
     return (
       <div className="flex items-center justify-center">
         <Loader />
@@ -35,11 +51,12 @@ const Tests = () => {
         {/* Cards */}
         <div className="w-full mt-4">
           <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4, 5].map((value, index) => (
+            {allTest.map((test: TestType) => (
               <Card
-                key={index}
-                subject="Mathematics"
-                description="lorem ispumsahja"
+                key={test?._id}
+                subject={test?.subject}
+                description={currentClass?.name}
+                testId={test?._id}
               />
             ))}
           </div>

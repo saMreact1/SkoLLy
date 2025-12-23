@@ -81,7 +81,7 @@ const Home = () => {
         </div>
       )}
       {!isLoading && profile && (
-        <div className="flex md:flex-col-reverse sm:flex-col lg:flex-row lg:space-x-6 px-2 md:space-y-6 md:items-center w-full mt-2 z-999">
+        <div className="flex md:flex-col-reverse sm:flex-col lg:flex-row lg:space-x-6 px-2 md:space-y-6 md:items-center w-full mt-6 z-999">
           {/* left */}
           <div className="lg:w-8/12 flex flex-col space-y-6 md:mt-4">
             <h1 className="font-medium text-xl md:hidden lg:block">
