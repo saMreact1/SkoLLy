@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 exports.getSubject = async (req, res) => {
   try {
     const tenantId = req.user.tenantId;
-
     const subjects = await Subject.find({ tenantId })
       .populate('teacher', 'fullName email');
     res.status(200).json({subjects});

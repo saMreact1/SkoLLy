@@ -30,7 +30,7 @@ const Layout = () => {
       />
 
       <HeaderBar user={user} />
-      <div className="flex-1 min-h-0 ml-[250px] overflow-y-auto p-5 w-[84%] mt-12">
+      <div className="flex-1 min-h-0 ml-[250px] overflow-y-auto p-5 w-[84%] mt-16">
         <Outlet />
       </div>
     </div>

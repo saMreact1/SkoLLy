@@ -9,12 +9,13 @@ import {
   
 } from "react-icons/fa";
 import { FaBookAtlas,  FaGears, FaGraduationCap, FaLocationPin, FaRegCalendar } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { useLocation, NavLink } from "react-router-dom";
 import { LoginPageUrl } from "../../utils/helper";
 import toast from "react-hot-toast";
 import { useSchoolStore } from "../../store/authStore";
 import { useSchools } from "../../hooks/useStudents";
 import { useEffect } from "react";
+
 
 const sidebarLinks = [
   { name: "Home", path: "/", icon: <FaHome /> },
@@ -55,9 +56,9 @@ const Sidebar = () => {
         <div className="flex-1 flex-wrap">
           <div className="flex-col space-y-4">
             {sidebarLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.name}
-                href={link.path}
+                to={link.path}
                 className={`flex gap-2 px-4 items-center py-2 rounded-lg ${
                   pathname === link.path
                     ? "bg-[#dcdada] text-slate-700 rounded-b-3xl rounded-t-3xl w-[200px] "
@@ -70,7 +71,7 @@ const Sidebar = () => {
                 <span>
                   {link.name}
                 </span>
-              </a>
+              </NavLink>
             ))}
           
           </div>

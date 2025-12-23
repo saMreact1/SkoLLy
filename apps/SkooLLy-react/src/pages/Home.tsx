@@ -50,7 +50,6 @@ const Home = () => {
 
   const {data: termData} = useTerm();
   const term = useTermStore((state) => (state.term = termData));
-  console.log(term)
 
   if (error) toast.error(error.message);
 

@@ -51,7 +51,7 @@ const Tests = () => {
         {/* Cards */}
         <div className="w-full mt-4">
           <div className="grid grid-cols-4 gap-4">
-            {allTest.map((test: TestType) => (
+            {allTest && allTest.map((test: TestType) => (
               <Card
                 key={test?._id}
                 subject={test?.subject}

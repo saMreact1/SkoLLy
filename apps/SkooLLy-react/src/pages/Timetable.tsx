@@ -1,41 +1,41 @@
 import toast from "react-hot-toast";
 import { useStudents, useTimeTable } from "../hooks/useStudents";
-import TimetableCalendar from "../components/shared/TimetableCalendar";
+// import TimetableCalendar from "../components/shared/TimetableCalendar";
 import Loader from "../components/shared/Loader";
 import { useTimetableStore } from "../store/authStore";
 import { useEffect, useState } from "react";
 import { convertTimetableToEvents } from "../utils/helper";
 import TimetableComponent from "../components/timetable/TimetableComponent";
 
-const events = [
-  {
-    id: "1",
-    title: "Team Meeting",
-    start: new Date("2025-12-04T10:00:00"),
-    end: new Date("2025-12-04T11:00:00"),
-    description: "Weekly team sync",
-    backgroundColor: "#3b82f6",
-    color: "black",
-  },
-  {
-    id: "2",
-    title: "Project Deadline",
-    start: new Date("2025-12-12T23:59:59"),
-    end: new Date("2025-12-19T23:59:59"),
-    allDay: true,
-    backgroundColor: "#ef4444",
-    color: "black",
-  },
-];
+// const events = [
+//   {
+//     id: "1",
+//     title: "Team Meeting",
+//     start: new Date("2025-12-04T10:00:00"),
+//     end: new Date("2025-12-04T11:00:00"),
+//     description: "Weekly team sync",
+//     backgroundColor: "#3b82f6",
+//     color: "black",
+//   },
+//   {
+//     id: "2",
+//     title: "Project Deadline",
+//     start: new Date("2025-12-12T23:59:59"),
+//     end: new Date("2025-12-19T23:59:59"),
+//     allDay: true,
+//     backgroundColor: "#ef4444",
+//     color: "black",
+//   },
+// ];
 
-const timetableData = [
-  { day: "Monday", time: "8:00 - 9:00", subject: "Mathematics" },
-  { day: "Monday", time: "9:00 - 10:00", subject: "English" },
-  { day: "Monday", time: "10:00 - 11:00", subject: "Physics" },
+// const timetableData = [
+//   { day: "Monday", time: "8:00 - 9:00", subject: "Mathematics" },
+//   { day: "Monday", time: "9:00 - 10:00", subject: "English" },
+//   { day: "Monday", time: "10:00 - 11:00", subject: "Physics" },
 
-  { day: "Tuesday", time: "8:00 - 9:00", subject: "Chemistry" },
-  { day: "Tuesday", time: "9:00 - 10:00", subject: "Biology" },
-];
+//   { day: "Tuesday", time: "8:00 - 9:00", subject: "Chemistry" },
+//   { day: "Tuesday", time: "9:00 - 10:00", subject: "Biology" },
+// ];
 
 
 
