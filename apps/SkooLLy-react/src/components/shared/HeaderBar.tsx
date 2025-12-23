@@ -27,7 +27,7 @@ const HeaderBar = ({...user}: UserProps) => {
 
   return (
     <div 
-    className="bg-black py-2 px-8 fixed w-[92%] bottom-0 top-0 left-45 h-15 rounded-b-l-sm z-9999">
+    className="bg-black py-2 px-8 fixed w-[92%] bottom-0 top-0 left-45 h-18 rounded-b-l-sm z-9999">
       <div className="flex justify-around items-center">
         <div className="flex relative items-center">
           <input 
@@ -83,7 +83,7 @@ const HeaderBar = ({...user}: UserProps) => {
         </div>
         
       </div>
-      <hr className="my-2 border-slate-400/30"/>
+      <hr className="my-4 border-slate-400/30"/>
     </div>
   )
 }
