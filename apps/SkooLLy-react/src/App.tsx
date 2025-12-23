@@ -18,6 +18,7 @@ const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Assignments = lazy(() => import("./pages/Assignments"));
 const Events = lazy(() => import("./pages/Events"));
+const TakeTestPage = lazy(() => import("./pages/test/TakeTestPage"));
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const router = createBrowserRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
+  {path: "/tests/:id", element: <TakeTestPage />}
 ]);
 
 const App = () => {
@@ -50,8 +52,6 @@ const App = () => {
       (pathname === "/"
         ? "Home"
         : pathname.slice(1).charAt(0).toUpperCase() + pathname.slice(2));
-
-  
 
     if (token) {
       localStorage.setItem("authToken", token);

@@ -1,6 +1,7 @@
 import { FaRegNoteSticky } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
-const Card = ({ subject, description }: any) => {
+const Card = ({ subject, description, testId }: any) => {
   return (
     <button className="group relative h-[220px] w-full text-left focus:outline-none">
       <span className="absolute inset-0 border-2 border-dashed border-black rounded-md"></span>
@@ -19,9 +20,11 @@ const Card = ({ subject, description }: any) => {
         </div>
 
         <div className="mt-4">
+          <Link to={`/tests/${testId}`}>
           <span className="inline-block font-bold underline">
             Start Test →
           </span>
+          </Link>
         </div>
       </div>
     </button>

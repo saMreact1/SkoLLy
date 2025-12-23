@@ -12,12 +12,14 @@ const requestSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "School",
     },
-    term: String,
+    termName: String,
     termId: {
       type: mongoose.Types.ObjectId,
       ref: "Term",
     },
-    result: [
+    testRequest: [{ type: mongoose.Types.ObjectId, ref: "Test" }],
+
+    resultRequest: [
       {
         type: mongoose.Types.ObjectId,
         ref: "Result",

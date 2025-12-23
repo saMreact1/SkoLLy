@@ -45,8 +45,6 @@ const Timetable = () => {
   const { data: timetable, isLoading, error } = useTimeTable(classId, { enabled: !!classId })
   const { timetable: timeTable, setTimetable } = useTimetableStore();
   const [events, setEvents] = useState<any[]>([]);
-
-  console.log(timetable?.data)
   useEffect(() => {
     if (error) toast.error(error.message);
   }, [error]);
