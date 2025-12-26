@@ -44,7 +44,7 @@ const TimetableComponent = ({ data }: TimetableProps) => {
         <tbody>
           {TIMES.map((time, index) =>
             time === "BREAK" ? (
-              <tr key={`break-${index}`} className="bg-yellow-200">
+              <tr key={`break-${index}`} className="bg-black/10 text-red-400">
                 <td colSpan={6} className="p-4 text-center font-bold">
                   BREAK TIME
                 </td>
