@@ -3,7 +3,8 @@ const path = require('path');
 
 const FILE_PATHS = {
   logo: 'uploads/logos',
-  profilePic: 'uploads/profilePics'
+  profilePic: 'uploads/profilePics',
+  csvFile: 'uploads/csv',
 };
 
 const storage = multer.diskStorage({

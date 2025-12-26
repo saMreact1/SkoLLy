@@ -1,0 +1,5 @@
+number,question,options,question_answer,question_score
+1,Who is the first person,"[""d"", ""3"" ,""1"", ""0""]","""3""",10
+2,who is the second person,"[""d"", ""3"" ,""1"", ""0""]","""0",10
+3,who is the third person,"[""d"", ""3"" ,""1"", ""0""]","""d""",10
+4,who is the fourth person,"[""d"", ""3"" ,""1"", ""0""]","""1""",10
