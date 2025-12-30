@@ -34,6 +34,11 @@ exports.updateSubject = async (req, res) => {
   try {
     const updated = await Subject.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .populate('teacher', 'fullName email');
+    const updateTeacher = await Teacher.findByIdAndUpdate(updated.teacher._id, {
+      subjectId: updated._id,
+      subject: updated.name
+    });
+
     res.json(updated);
   } catch (err) {
     res.status(400).json({ error: err.message });
