@@ -1,4 +1,5 @@
 const Subject = require('../models/subject.model');
+const Teacher = require('../models/teacher.model');
 const mongoose = require('mongoose');
 
 
@@ -32,13 +33,15 @@ exports.createSubject = async (req, res) => {
 
 exports.updateSubject = async (req, res) => {
   try {
+    const {teacher} = req.body;
+
     const updated = await Subject.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .populate('teacher', 'fullName email');
-    const updateTeacher = await Teacher.findByIdAndUpdate(updated.teacher._id, {
+    
+    await Teacher.findByIdAndUpdate(teacher, {
       subjectId: updated._id,
-      subject: updated.name
+      subject: updated.name,
     });
-
     res.json(updated);
   } catch (err) {
     res.status(400).json({ error: err.message });
