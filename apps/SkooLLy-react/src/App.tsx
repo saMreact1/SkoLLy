@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       { path: "settings", element: <Settings /> },
     ],
   },
-  {path: "/tests/:id", element: <TakeTestPage />}
+  {path: "/tests/:testId", element: <TakeTestPage />}
 ]);
 
 const App = () => {

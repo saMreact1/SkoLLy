@@ -51,14 +51,26 @@ const Tests = () => {
         {/* Cards */}
         <div className="w-full mt-4">
           <div className="grid grid-cols-4 gap-4">
-            {allTest && allTest.map((test: TestType) => (
+            {allTest ? allTest.map((test: TestType) => (
               <Card
                 key={test?._id}
                 subject={test?.subject}
                 description={currentClass?.name}
                 testId={test?._id}
               />
-            ))}
+            ))
+            :
+            (
+              <>
+                <div className="min-w-full flex items-center justify-center">
+                  <p className="text-center py-10 text-gray-500">
+                    No test available at the moment
+                  </p>
+                </div>
+              </>
+            )
+          }
+
           </div>
         </div>
       </div>

@@ -8,6 +8,9 @@ const Subject = require("../models/subject.model");
 const School = require("../models/school.model");
 const Request = require("../models/request.model");
 const { isValidObjectId } = require("mongoose");
+const path = require("path");
+const csv = require("csvtojson");
+const fs = require("fs");
 
 exports.createTest = async (req, res) => {
   try {
@@ -381,10 +384,10 @@ exports.getTestByClass = async (req, res) => {
 
 exports.getTestById = async (req, res) => {
   try {
-    const {testId} = req.params;
-    const {sessionId, role, tenantId} = req.user;
+    const { testId } = req.params;
+    const { sessionId, role, tenantId } = req.user;
     if (!isValidObjectId(testId)) {
-      return res.status(400).json({message: "Invalid test Id"});
+      return res.status(400).json({ message: "Invalid test Id" });
     }
     const session = await Session.findOne({
       _id: sessionId,
@@ -400,7 +403,7 @@ exports.getTestById = async (req, res) => {
 
     const term = await Term.findOne({
       _id: { $in: session.terms },
-      isActive: true
+      isActive: true,
     });
 
     if (!term) {
@@ -409,37 +412,210 @@ exports.getTestById = async (req, res) => {
       });
     }
 
-    let test = {}
+    let test = {};
     let foundTest = false;
 
     const tests = await Test.findOne({
       schoolId: tenantId,
       sessionId,
-      termId: term._id
+      termId: term._id,
     });
 
     if (!tests) {
-      return res.status(404).json({message: `No test for term (${term.name})`});
+      return res
+        .status(404)
+        .json({ message: `No test for term (${term.name})` });
     }
 
     for (const t of tests.allTest) {
       if (t._id.toString() === testId) {
         if (role !== "admin" && t.isApproved === false) {
-          return res.status(401).json({ message: `This ${t.subject.toLowerCase()} test is yet to be approved by the admin` });
+          return res
+            .status(401)
+            .json({
+              message: `This ${t.subject.toLowerCase()} test is yet to be approved by the admin`,
+            });
         }
-        foundTest = true
+        foundTest = true;
         test = t;
         break;
       }
     }
     if (!foundTest) {
-      return res.status(404).json({message: `No test found with this id: ${testId}`});
+      return res
+        .status(404)
+        .json({ message: `No test found with this id: ${testId}` });
     }
 
     return res.status(200).json({ test });
-    
   } catch (error) {
     console.log("Error getting test by id: ", error);
-    return res.status(500).json({message: "Internal Server Error"});
+    return res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
+
+exports.createTestWithCSV = async (req, res) => {
+  try {
+    const { tenantId, sessionId, id } = req.user;
+    const { classId, subjectId } = req.body;
+
+    if (!isValidObjectId(classId) || !isValidObjectId(subjectId)) {
+      return res.status(400).json({ message: "Invalid class or subject ID" });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const csvFilePath = req.file.path;
+    const csvToJson = await csv().fromFile(csvFilePath);
+    fs.unlink(csvFilePath, (err) => {
+      if (err) console.error("Failed to delete the csv file: ", err);
+    });
+
+    const jsonArrayObj = csvToJson.map((row) => ({
+      ...row,
+      options: safeJsonParse(row.options),
+      question_answer: safeJsonParse(row.question_answer),
+      question_score: Number(safeJsonParse(row.question_score)),
+      number: Number(safeJsonParse(row.number)),
+    }));
+
+    const school = await School.findById(tenantId);
+    const session = await Session.findOne({
+      _id: sessionId,
+      schoolId: tenantId,
+      isActive: true,
+    });
+
+    if (!school || !session) {
+      return res.status(400).json({ message: "Invalid school or session" });
+    }
+
+    const term = await Term.findOne({
+      _id: { $in: session.terms },
+      isActive: true,
+    });
+
+    if (!term) {
+      return res.status(400).json({ message: "No active term" });
+    }
+
+    const classDoc = await Class.findById(classId);
+    const subject = await Subject.findById(subjectId);
+
+    if (!classDoc || !subject) {
+      return res.status(404).json({ message: "Class or subject not found" });
+    }
+
+    const teacher = await Teacher.findOne({
+      userId: id,
+      tenantId,
+      subjectId,
+    });
+
+    if (!teacher || !teacher.classes.includes(classId)) {
+      return res
+        .status(403)
+        .json({ message: "You are not allowed to create this test" });
+    }
+
+    let createdTest = await Test.findOne({
+      sessionId,
+      termId: term._id,
+      schoolId: tenantId,
+    });
+
+    const existingTest = await Test.findOne({
+      sessionId,
+      termId: term._id,
+      schoolId: tenantId,
+      allTest: {
+        $elemMatch: {
+          subjectId,
+          classId,
+        },
+      },
+    });
+
+    if (existingTest) {
+      return res.status(400).json({
+        message: `Test for ${classDoc.name} class and ${subject.name} subject already exist`,
+      });
+    }
+
+    if (!createdTest) {
+      // Create a test
+      createdTest = await Test.create({
+        schoolId: tenantId,
+        schoolName: school.name,
+        sessionId,
+        sessionName: session.sessionName,
+        termName: term.name,
+        termId: term._id,
+      });
+    }
+
+    createdTest.allTest.push({
+      subject: subject.name,
+      className: classDoc.name,
+      teacherName: teacher.fullName,
+      subjectCode: subject.code,
+      subjectId,
+      teacherId: teacher._id,
+      classId,
+    });
+
+    // sending request to admin for approval
+    let existingTestRequest = await Request.findOne({
+      sessionId,
+      schoolId: tenantId,
+      termId: term._id,
+    });
+
+    for (const t of createdTest.allTest) {
+      if (
+        t.subjectId.toString() === subjectId &&
+        t.classId.toString() === classId
+      ) {
+        t.subjectTest.push(...jsonArrayObj);
+        if (existingTestRequest) {
+          existingTestRequest.testRequest.push(t._id);
+        }
+        break;
+      }
+    }
+
+    if (!existingTestRequest) {
+      existingTestRequest = await Request.create({
+        sessionName: session.sessionName,
+        sessionId,
+        schoolName: school.name,
+        schoolId: tenantId,
+        termName: term.name,
+        termId: term._id,
+        testRequest: [createdTest.allTest[0]._id],
+      });
+    }
+
+    await createdTest.save();
+    await existingTestRequest.save();
+
+    return res
+      .status(201)
+      .json({ message: "Test Created Successfully", tests: createdTest });
+  } catch (error) {
+    console.error("Error during conversion: ", error);
+    res.status(500).json({ message: "Error processing CSV file." });
+  }
+};
+
+const safeJsonParse = (value, fallback = []) => {
+  if (!value || typeof value !== "string") return fallback;
+
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+};
