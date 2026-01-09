@@ -612,7 +612,6 @@ exports.createTestWithCSV = async (req, res) => {
 
 const safeJsonParse = (value, fallback = []) => {
   if (!value || typeof value !== "string") return fallback;
-
   try {
     return JSON.parse(value);
   } catch {
