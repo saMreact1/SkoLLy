@@ -14,6 +14,21 @@ cron.schedule("* * * * *", async () => {
         // ending all active sessions
         for (const session of endedSessions) {
             const {sessionName, schoolName, schoolId} = session;
+            // check if current term is the last term, if not, skip ending the session
+            const currentTerm = await Term.findOne({
+                _id: {$in: session.terms},
+                isActive: true,
+            });
+            if (currentTerm && currentTerm.name !== "THIRD") {
+                console.log(`--- Skipping ending ${sessionName} for ${schoolName} as current term is not the last term ---\n`);
+                continue;
+            }
+            if (!currentTerm?.endDate) continue;
+            if (currentTerm.endDate > date) {
+                console.log(`--- Skipping ending ${sessionName} for ${schoolName} as current term is not yet ended ---\n`);
+                continue;
+            }
+            
             session.isActive = false;
             await session.save();
             console.log(`--- Closing ${sessionName} for ${schoolName}---\n`);
